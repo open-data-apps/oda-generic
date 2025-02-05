@@ -1,0 +1,130 @@
+{
+  "app-entwickler": "12343",
+  "app-entwickler-name": "mueller-gmbh",
+  "name-in-url": "Formular",
+  "name": "Formular",
+  "version": "1.0.0",
+  "odas-app-icon": "assets/odas-app-icon.png",
+  "app-icon": "assets/app-icon.png",
+  "kurzbeschreibung": "",
+  "beschreibung": [
+    "Die App zeigt eine Formularauswahl an mit ",
+    "den jeweils definierten Formularen. Die Daten werden aus einem Open ",
+    "Data Portal bezogen und müssen in Form von einer JSON-Datei vorliegen. ",
+    "Die Daten müssen in einem Open Data Portal ",
+    "wie folgt aufgebaut sein: \n",
+    "* Datensatz: JSON Datei mit allen enthaltenen Formularen",
+    "* Ressourcen: Jedes Formular kann untereinander im JSON angelegt werden. ",
+    "Jedes Formular wird in einer Liste zur auswahl angezeigt."
+  ],
+  "screenshots": ["docs/Desktop_Screenshot", "docs/Mobile_Screenshot"],
+  "apiVersion": "1",
+  "instanz-config": {
+    "seitentitel": {
+      "label": "Seitentitel",
+      "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt",
+      "default": "Formular",
+      "format": {
+        "typ": "string",
+        "laenge": 50
+      },
+      "erforderlich": "ja"
+    },
+    "titel": {
+      "label": "Titel",
+      "hilfe": "Der Titel wird in der Titelzeile der App angezeigt",
+      "default": "Städtischer Formularschrank",
+      "format": {
+        "typ": "string",
+        "laenge": 50
+      },
+      "erforderlich": "ja"
+    },
+    "icon": {
+      "label": "App-Icon",
+      "hilfe": "Das Icon wird links oben in der Titelzeile angezeigt",
+      "format": {
+        "typ": "image",
+        "hoehe": 100,
+        "breite": 300
+      },
+      "erforderlich": "ja"
+    },
+    "kontakt": {
+      "label": "Kontakt",
+      "hilfe": "Der Text wird im Menüpunkt 'Kontakt' anzeigt",
+      "format": {
+        "typ": "html"
+      },
+      "default": "Tel.: <a href='tel:{{anbieter.telcode}}'>{{anbieter.tel}}</a><br>Fax: <a href='tel:{{anbieter.fax}}'>{{anbieter.faxcode}}</a><br>E-Mail: <a href='mailto:{{anbieter.email}}'>{{anbieter.email}}</a>",
+      "erforderlich": "ja"
+    },
+    "beschreibung": {
+      "label": "Beschreibung",
+      "hilfe": "Der Text wird im Menüpunkt 'Über diese App' anzeigt",
+      "format": {
+        "typ": "html"
+      },
+      "default": "Die Formular-App zeigt die jeweils definierten Formulare.\n Diese besitzen Standardformate wie Textformular oder Bestätigungsformular.\nDie Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, den Datenbestend immer sofort zu aktualisieren. \n##App-Anbieter\nDie App wird bereit gestellt von <a href=\"{{anbieter.url}}\"><{{anbieter.name}}>\nDie Daten kommen aus  unserem Open Data Portal <a href=\"{{odp.url}}\"><{{odp.name}}> geladen\n##Datenquelle\nDie Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.datensatz-url}}\"><{{appinstanz.datensatz-name}}> geladen.\n## App-Entwickler\n Die App wurde entwickelt von <a href=\"{{app.developer-url}}\"><{{app.developer-name}}>. App-Version: {{app.version}}.\n## Open Data App Store\nDer Open Data App Store betrieben von <a href=\"{{odas.betreiber.url}}\"><{{odas.betreiber.name}}>\n",
+      "erforderlich": "ja"
+    },
+    "impressum": {
+      "label": "Impressum",
+      "hilfe": "Der Text wird im Menüpunkt 'Impressum' anzeigt",
+      "format": {
+        "typ": "html"
+      },
+      "default": "{{anbieter.name}}\n{{anbieter.kontakt-bezeichnung}}\n{{anbieter.strasse}}\n{{anbieter.plzort}}\nTelefon: {{anbieter.tel}}\nFax: {{anbieter.fax}}\nWebsite: <a href='{{anbieter.url-extern}}' target='_blank'>{{anbieter.url-extern}}</a>",
+      "erforderlich": "ja"
+    },
+    "datenschutz": {
+      "label": "Datenschutz",
+      "hilfe": "Der Text wird im Menüpunkt 'Datenschutz' anzeigt",
+      "format": {
+        "typ": "html"
+      },
+      "default": "Alle Daten sind geschützt.",
+      "erforderlich": "ja"
+    },
+    "urlDaten": {
+      "label": "URL zum Datensatz im ODP",
+      "hilfe": "Der Datensatz im Open Data Portal mit den JSON-Einzeldateien des Formularschranks",
+      "format": {
+        "typ": "url"
+      },
+      "default": "{{appconfig.datensatz-url}}",
+      "beispiel": "https://open-data-musterstadt.ckan.de/dataset/formulare",
+      "erforderlich": "ja"
+    },
+    "fusszeile": {
+      "label": "Fußzeile",
+      "hilfe": "Wird auf der Website unten in der Fusszeile angezeigt.",
+      "format": {
+        "typ": "String",
+        "laenge": 50
+      },
+      "default": "(C) Copyright {{jahr}} | App & Daten: {{anbieter.name}} | App-Entwickler: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
+      "erforderlich": "ja"
+    },
+    "apiUrl": {
+      "label": "URL zur Datensatz-API",
+      "hilfe": "Von dieser API-URL zum Datensatz werden die Ressoucen bezogen (JSON)",
+      "format": {
+        "typ": "url"
+      },
+      "default": "{{appconfig.datensatz-apiurl}}",
+      "beispiel": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json",
+      "erforderlich": "ja"
+    },
+    "sprache": {
+      "label": "Sprache der App",
+      "hilfe": "Angabe der App-Sprache",
+      "format": {
+        "typ": "dropdown",
+        "optionen": ["de"],
+        "default": "de"
+      },
+      "erforderlich": "ja"
+    }
+  }
+}
