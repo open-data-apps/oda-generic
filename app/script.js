@@ -8,9 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const formParam = currentURL.searchParams.get("form");
   const url = window.location.href;
   let configUrl;
+
   if (
     url === "http://127.0.0.1:5500/app/" ||
-    url === "http://localhost:8089/"
+    url === "http://localhost:8089/" ||
+    url === "http://127.0.0.1:5500/app/?form=" + formParam
   ) {
     configUrl = "../odas-config/config.json";
   } else {
