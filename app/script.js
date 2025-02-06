@@ -6,8 +6,13 @@ let formDataStorage = {};
 document.addEventListener("DOMContentLoaded", () => {
   const currentURL = new URL(window.location.href);
   const formParam = currentURL.searchParams.get("form");
-  const configUrl = window.location.href + "config";
-  const localUrl = "../odas-config/config.json";
+  const url = window.location.href;
+  let configUrl;
+  if (url === "http://127.0.0.1:5500/app/") {
+    configUrl = "../odas-config/config.json";
+  } else {
+    configUrl = window.location.href + "config";
+  }
   fetch(configUrl)
     .then((response) => response.json())
     .then((data) => {
