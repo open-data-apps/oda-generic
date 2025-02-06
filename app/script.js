@@ -5,10 +5,10 @@ let formDataStorage = {};
 
 document.addEventListener("DOMContentLoaded", () => {
   const currentURL = new URL(window.location.href);
-  const formParam = currentURL.searchParams.get("form"); // Formularname aus URL holen
+  const formParam = currentURL.searchParams.get("form");
   const configUrl = window.location.href + "config";
   const localUrl = "../odas-config/config.json";
-  fetch(localUrl)
+  fetch(configUrl)
     .then((response) => response.json())
     .then((data) => {
       configData = data;
@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("footer-text").textContent =
         configData.fusszeile ||
         "&copy; 2025 ODAS Karten App. Alle Rechte vorbehalten.";
-        loadPage("startseite", formParam);
-      })
+      loadPage("startseite", formParam);
+    })
     .catch((err) => console.error("Fehler beim Laden der Konfiguration:", err));
 });
 
@@ -57,10 +57,12 @@ async function loadPage(page, formParam = null) {
     const formListContainer = document.getElementById("formListContainer");
     // Prüfen, ob ein Formular über die URL geladen werden soll
     if (formParam) {
-    const selectedForm = loadedData.forms.find((form) => form.id === formParam);
-    if (selectedForm) {
-    loadDynamicForm(selectedForm);
-    return; // Verhindert, dass die Liste der Formulare noch gerendert wird
+      const selectedForm = loadedData.forms.find(
+        (form) => form.id === formParam
+      );
+      if (selectedForm) {
+        loadDynamicForm(selectedForm);
+        return; // Verhindert, dass die Liste der Formulare noch gerendert wird
       }
     }
     // Wenn nur ein Formular vorhanden ist, wird es direkt geladen
