@@ -72,7 +72,7 @@ async function loadPage(page, formParam = null) {
       );
       if (selectedForm) {
         loadDynamicForm(selectedForm);
-        return; // Verhindert, dass die Liste der Formulare noch gerendert wird
+        //return; // Verhindert, dass die Liste der Formulare noch gerendert wird
       }
     }
     // Wenn nur ein Formular vorhanden ist, wird es direkt geladen
