@@ -60,4 +60,4 @@ config: ## show docker-compose config
 	${DC} config
 zip: ## Pack den Ordner odas-app-formular in eine ZIP-Datei
 	zip -r odas-app-formular.zip \
-	 	app app-package.json CHANGELOG.md
+	 	app assets app-package.json CHANGELOG.md

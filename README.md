@@ -12,6 +12,14 @@ Die App ist eine "ODAP App V1".
 
 ### Aufbau der App
 
+#### Desktop Version
+
+![Alt-Text](/assets/Desktop_Screenshot.png)
+
+#### Mobile Version
+
+![Alt-Text](/assets/Mobile_Screenshot.png)
+
 ### Start der App
 
     $ make build up
