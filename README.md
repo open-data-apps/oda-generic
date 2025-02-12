@@ -15,7 +15,7 @@ Die App ist eine "ODAP App V1".
 ### Start der App
 
     $ make build up
-    $ curl http://localhost:8086
+    $ curl http://localhost:8089
 
 ## Autor
 

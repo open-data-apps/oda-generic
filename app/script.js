@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (
     url === "http://127.0.0.1:5500/app/" ||
     url === "http://localhost:8089/" ||
-    url === "http://127.0.0.1:5500/app/?form=" + formParam
+    url === "http://127.0.0.1:5500/app/?form=" + formParam ||
+    url === "http://localhost:8089/?form=" + formParam
   ) {
     configUrl = "../odas-config/config.json";
   } else {
