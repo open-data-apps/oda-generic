@@ -1,15 +1,34 @@
 {
   "apiVersion": "1",
-  "titel": "Städtischer Formularschrank",
-  "seitentitel": "Formular",
+  "titel": "Titel der App",
+  "seitentitel": "Seitentitel der App",
   "icon": "logo_ondics.png",
-  "beschreibung": "",
-  "kontakt": "Tel.: <a href='tel:+49711310093100'>0711-31009-3100</a><br>Fax: <a href='tel:+49711310093108'>0711-31009-3108</a><br>E-Mail: <a href='mailto:info@ondics.de'>info@ondics.de</a>",
-  "impressum": "Ondics GmbH<br>Wolfgang Clauss<br>Blumenstrasse 19<br><a href='https://www.ondics.de/' target='_blank'>https://www.ondics.de/</a>",
-  "datenschutz": "",
-  "urlODP": "<a href='https://offenedaten.esslingen.de' target='_blank'>https://offenedaten.esslingen.de</a>",
-  "urlDaten": "<a href='https://offenedaten.esslingen.de/Ondics_GmbH' target='_blank'>https://offenedaten.esslingen.de/Ondics_GmbH</a>",
-  "fusszeile": "(C) Copyright 2025 | Inhalt: Stadt Esslingen | App: Mueller GmbH | Provided by: Ondics GmbH",
+  "beschreibung": [
+    "Die App ist eine ",
+    "generische welche\n",
+    "wosweitergeht\n",
+    "## titel \n",
+    "und normaler text."
+  ],
+  "kontakt": [
+    "Tel.: <a href='tel:+49711310093100'>0711-31009-3100</a><br>",
+    "Fax: <a href='tel:+49711310093108'>0711-31009-3108</a><br>",
+    "E-Mail: <a href='mailto:info@ondics.de'>info@ondics.de</a>"
+  ],
+  "impressum": [
+    "Ondics GmbH<br>",
+    "Wolfgang Clauss<br>Blumenstrasse 19<br>",
+    "<a href='https://www.ondics.de/' target='_blank'>https://www.ondics.de/</a>"
+  ],
+  "datenschutz": "umfangreicher Text...",
+  "urlODP": "https://open-data-musterstadt.ckan.de",
+  "urlDaten": "https://open-data-musterstadt.ckan.de/testdaten",
+  "fusszeile": [
+    "(C) Copyright 2025 | ",
+    "für den Inhalt: Ondics GmbH | ",
+    "App-Entwickler: Ondics GmbH | ",
+    "Provided by: Ondics GmbH"
+  ],
   "apiUrl": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json",
   "sprache": "de"
 }

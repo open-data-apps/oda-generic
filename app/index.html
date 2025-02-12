@@ -51,61 +51,32 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Offcanvas Navbar -->
-            <div
-              class="offcanvas offcanvas-end"
-              tabindex="-1"
-              id="offcanvasNavbar"
-              aria-labelledby="offcanvasNavbarLabel"
-            >
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
               <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menü</h5>
-                <button
-                  type="button"
-                  class="btn-close text-reset"
-                  data-bs-dismiss="offcanvas"
-                  aria-label="Close"
-                ></button>
+                <h5 class="offcanvas-title">Menü</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="offcanvas-body">
                 <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a
-                      href="#"
-                      class="nav-link"
-                      onclick="loadPage('startseite')"
-                      >Startseite</a
-                    >
+                    <a class="nav-link" href="#startseite" data-page="startseite">Startseite</a>
                   </li>
                   <li class="nav-item">
-                    <a
-                      href="#"
-                      class="nav-link"
-                      onclick="loadPage('beschreibung')"
-                      >Über diese App</a
-                    >
+                    <a class="nav-link" href="#beschreibung" data-page="beschreibung">Beschreibung</a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="loadPage('kontakt')"
-                      >Kontakt</a
-                    >
+                    <a class="nav-link" href="#kontakt" data-page="kontakt">Kontakt</a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="loadPage('impressum')"
-                      >Impressum</a
-                    >
+                    <a class="nav-link" href="#datenschutz" data-page="datenschutz">Datenschutz</a>
                   </li>
                   <li class="nav-item">
-                    <a
-                      href="#"
-                      class="nav-link"
-                      onclick="loadPage('datenschutz')"
-                      >Datenschutz</a
-                    >
+                    <a class="nav-link" href="#impressum" data-page="impressum">Impressum</a>
                   </li>
+                  <!-- Weitere Links -->
                 </ul>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </header>

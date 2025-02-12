@@ -2,7 +2,7 @@ services:
   web:
     build: .
     ports:
-      - "8089:80"
+      - "8090:80"
     volumes:
       - ./app:/usr/share/nginx/html/app
       - ./odas-config:/usr/share/nginx/html/odas-config

@@ -1,77 +1,119 @@
+let configData = {}; // Globale Variable für die Konfigurationsdaten
 
-let configData = {};
-let loadedData = null;
-let currentPage = 1;
-let formDataStorage = {};
-
-document.addEventListener("DOMContentLoaded", () => {
-  const currentURL = new URL(window.location.href);
-  const formParam = currentURL.searchParams.get("form");
-  const url = window.location.href;
-  let configUrl;
-
-  if (
-    url === "http://127.0.0.1:5500/app/" ||
-    url === "http://localhost:8089/" ||
-    url === "http://127.0.0.1:5500/app/?form=" + formParam ||
-    url === "http://localhost:8089/?form=" + formParam ||
-    url === "http://10.0.0.142:8089/"
-  ) {
-    configUrl = "../odas-config/config.json";
-  } else {
-    configUrl = window.location.href + "config";
+document.addEventListener("DOMContentLoaded", async () => {
+  const configUrl = getConfigUrl();
+  try {
+    configData = await fetchConfig(configUrl); // Zuweisung zu globaler Variable
+    console.log(configData);
+    updatePageContent();
+    loadPage("startseite");
+  } catch (err) {
+    console.error("Fehler:", err);
   }
-  fetch(configUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      configData = data;
-      document.getElementById("title-text").textContent =
-        configData.titel || "";
-      document.getElementById("tab-title").textContent =
-        configData.seitentitel || "";
-      document.getElementById("logo-icon").src = configData.icon || "logo.png";
-      document.getElementById("footer-text").textContent =
-        configData.fusszeile ||
-        "&copy; 2025 ODAS Karten App. Alle Rechte vorbehalten.";
-      loadPage("startseite");
-    })
-    .catch((err) => console.error("Fehler beim Laden der Konfiguration:", err));
+  setupBurgerMenu();
 });
 
-async function loadPage(page) {
-  const mainContent = document.getElementById("main-content");
-  mainContent.innerHTML = "";
-
-  if (page === "startseite") {
-    mainContent.innerHTML = app();
-  } else if (page === "kontakt") {
-    mainContent.innerHTML = `<div class="col" id="secondarySites"><h2>Kontakt</h2><p>${
-      configData.kontakt || "Kontaktinformationen nicht verfügbar."
-    }</p></div>`;
-  } else if (page === "impressum") {
-    mainContent.innerHTML = `<div class="col" id="secondarySites"><h2>Impressum</h2><p>${
-      configData.impressum || "Impressumsinformationen nicht verfügbar."
-    }</p></div>`;
-  } else if (page === "datenschutz") {
-    mainContent.innerHTML = `<div class="col" id="secondarySites"><h2>Datenschutz</h2><p>${
-      configData.datenschutz || "Datenschutzhinweise nicht verfügbar."
-    }</p></div>`;
-  } else if (page === "beschreibung") {
-    mainContent.innerHTML = `<div class="col" id="secondarySites"><h2>Über diese App</h2><p>${
-      configData.beschreibung || "Beschreibung nicht verfügbar."
-    }</p></div>`;
-  }
+function getConfigUrl() {
+  const urlString = window.location.href;
+  const url = new URL(urlString);
+  const formParam = url.searchParams.get("form");
+  let configUrl = `${urlString}config.json`;
+  if (["127.0.0.1","localhost"].includes(url.hostname)) {
+    configUrl = "../odas-config/config.json";
+  } else if (["10.0.0.142"].includes(url.hostname)) {
+    configUrl = "/odas-config/config.json";
+  } 
+  return configUrl;
 }
 
-// Burger Menu schließ Funktion
-document.querySelectorAll(".navbar-nav .nav-link").forEach((link) => {
-  link.addEventListener("click", () => {
-    const offcanvasNavbar = document.getElementById("offcanvasNavbar");
-    const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar);
+/* die Funktion macht aus Multiline-Strings (enden mit einem \)
+ * Single Line Strings und dann ein normales Json
+ */
+function normalizeJson(extendedJson = "") {
+  console.log(extendedJson);
+  const cleanedString = extendedJson.replace(/\\\s*\n\s*/g, '');
+  return JSON.parse(cleanedString);
+}
 
-    // Wenn das Offcanvas Menü geöffnet ist, schließe es
-    if (offcanvas && offcanvasNavbar.classList.contains("show")) {
-      offcanvas.hide();
+/* die Funktion macht aus Multiline-Values (Array of Strings)
+ * Single Line Values 
+ */
+function flattenJson(jsonObj) {
+  const result = {};
+  for (const key in jsonObj) {
+    if (!jsonObj.hasOwnProperty(key)) continue;
+    const value = jsonObj[key];
+    // wenn ein Value aus einem Array of Strings besteht...
+    if (Array.isArray(value) && value.every(item => typeof item === 'string')) {
+      // ...verbinde die Strings zu einem einzigen String
+      result[key] = value.join('');
+    } else {
+      result[key] = value;
+    }
+  }
+  return result;
+}
+
+async function fetchConfig(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('kann Konfiguration nicht laden');
+  return flattenJson(await response.json());
+  //return normalizeJson(await response.text());
+}
+
+function updatePageContent() {
+  const { titel = "", seitentitel = "", icon = "logo.png", fusszeile = "&copy; 2025 ODAS Karten App. Alle Rechte vorbehalten." } = configData;
+
+  const elementMappings = {
+    "title-text": titel,
+    "tab-title": seitentitel,
+    "logo-icon": icon,
+    "footer-text": fusszeile
+  };
+
+  Object.entries(elementMappings).forEach(([id, content]) => {
+    const element = document.getElementById(id);
+    if (id === "logo-icon") {
+      element.src = content;
+    } else {
+      element.textContent = content;
     }
   });
-});
+}
+
+async function loadPage(page) {
+  if (!page) return; // Verhindere leere Seitenaufrufe
+
+  const content = {
+    startseite: app(configData),
+    kontakt: createPageContent("Kontakt", configData.kontakt),
+    impressum: createPageContent("Impressum", configData.impressum),
+    datenschutz: createPageContent("Datenschutz", configData.datenschutz),
+    beschreibung: createPageContent("Über diese App", configData.beschreibung)
+  }[page] || createPageContent("Fehler", "Seite nicht gefunden.");
+
+  document.getElementById("main-content").innerHTML = content;
+}
+
+function createPageContent(title, content = "Informationen nicht verfügbar.") {
+  return `<div class="col" id="secondarySites"><h2>${title}</h2><p>${content}</p></div>`;
+}
+
+function setupBurgerMenu() {
+  document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
+    const pageName = link.getAttribute("data-page") || link.getAttribute("href").replace('#', '').trim();
+    if (pageName) { // Stelle sicher, dass pageName gültig ist
+      link.addEventListener("click", (event) => {
+        event.preventDefault();  // Verhindere das standardmäßige Link-Verhalten
+        loadPage(pageName);  // Lade die entsprechende Seite
+
+        const offcanvasNavbar = document.getElementById("offcanvasNavbar");
+        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar);
+
+        if (offcanvas && offcanvasNavbar.classList.contains("show")) {
+          offcanvas.hide();
+        }
+      });
+    }
+  });
+}
