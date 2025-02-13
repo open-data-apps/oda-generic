@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 function getConfigUrl() {
   const urlString = window.location.href;
   const url = new URL(urlString);
-  const formParam = url.searchParams.get("form");
   let configUrl = `${urlString}config.json`;
   if (["127.0.0.1","localhost"].includes(url.hostname)) {
     configUrl = "../odas-config/config.json";

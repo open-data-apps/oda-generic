@@ -1,8 +1,8 @@
-# ODAS App Formular
+# ODAS App Generic
 
-Formular-App für den Open Data App-Store (ODAP)
+Generic-App für den Open Data App-Store (ODAP)
 
-Die App Formulare bietet Formulare zum ausfüllen an.
+Die App Generic bietet eine generische Vorschau einer ODAS App.
 
 Die App ist eine "ODAP App V1".
 

@@ -1,5 +1,5 @@
 #
-# ODAS Formular App
+# ODAS Generic App
 # (C) Ondics, 2025
 #
 
@@ -23,7 +23,7 @@ DATE := $(shell date '+%Y%m%d')
 .PHONY: help build stats
 
 help:
-	@echo "# ODAS Formular App"
+	@echo "# ODAS Generic App"
 	@echo "# Ondics, 2025"
 	@echo "# dir = ${current_dir}"
 	@echo Befehle: make ...
