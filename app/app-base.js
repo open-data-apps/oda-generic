@@ -17,11 +17,11 @@ function getConfigUrl() {
   const urlString = window.location.href;
   const url = new URL(urlString);
   let configUrl = `${urlString}config.json`;
-  if (["127.0.0.1","localhost"].includes(url.hostname)) {
+  if (["127.0.0.1", "localhost"].includes(url.hostname)) {
     configUrl = "../odas-config/config.json";
   } else if (["10.0.0.142"].includes(url.hostname)) {
     configUrl = "/odas-config/config.json";
-  } 
+  }
   return configUrl;
 }
 
@@ -30,12 +30,12 @@ function getConfigUrl() {
  */
 function normalizeJson(extendedJson = "") {
   console.log(extendedJson);
-  const cleanedString = extendedJson.replace(/\\\s*\n\s*/g, '');
+  const cleanedString = extendedJson.replace(/\\\s*\n\s*/g, "");
   return JSON.parse(cleanedString);
 }
 
 /* die Funktion macht aus Multiline-Values (Array of Strings)
- * Single Line Values 
+ * Single Line Values
  */
 function flattenJson(jsonObj) {
   const result = {};
@@ -43,9 +43,12 @@ function flattenJson(jsonObj) {
     if (!jsonObj.hasOwnProperty(key)) continue;
     const value = jsonObj[key];
     // wenn ein Value aus einem Array of Strings besteht...
-    if (Array.isArray(value) && value.every(item => typeof item === 'string')) {
+    if (
+      Array.isArray(value) &&
+      value.every((item) => typeof item === "string")
+    ) {
       // ...verbinde die Strings zu einem einzigen String
-      result[key] = value.join('');
+      result[key] = value.join("");
     } else {
       result[key] = value;
     }
@@ -55,19 +58,24 @@ function flattenJson(jsonObj) {
 
 async function fetchConfig(url) {
   const response = await fetch(url);
-  if (!response.ok) throw new Error('kann Konfiguration nicht laden');
+  if (!response.ok) throw new Error("kann Konfiguration nicht laden");
   return flattenJson(await response.json());
   //return normalizeJson(await response.text());
 }
 
 function updatePageContent() {
-  const { titel = "", seitentitel = "", icon = "logo.png", fusszeile = "&copy; 2025 ODAS Karten App. Alle Rechte vorbehalten." } = configData;
+  const {
+    titel = "",
+    seitentitel = "",
+    icon = "logo.png",
+    fusszeile = "&copy; 2025 ODAS Karten App. Alle Rechte vorbehalten.",
+  } = configData;
 
   const elementMappings = {
     "title-text": titel,
     "tab-title": seitentitel,
     "logo-icon": icon,
-    "footer-text": fusszeile
+    "footer-text": fusszeile,
   };
 
   Object.entries(elementMappings).forEach(([id, content]) => {
@@ -81,17 +89,30 @@ function updatePageContent() {
 }
 
 async function loadPage(page) {
-  if (!page) return; // Verhindere leere Seitenaufrufe
-
-  const content = {
-    startseite: app(configData),
-    kontakt: createPageContent("Kontakt", configData.kontakt),
-    impressum: createPageContent("Impressum", configData.impressum),
-    datenschutz: createPageContent("Datenschutz", configData.datenschutz),
-    beschreibung: createPageContent("Über diese App", configData.beschreibung)
-  }[page] || createPageContent("Fehler", "Seite nicht gefunden.");
+  let content;
+  console.log(page);
+  switch (page) {
+    case "startseite":
+      content = app(configData);
+      break;
+    case "kontakt":
+      content = createPageContent("Kontakt", configData.kontakt);
+      break;
+    case "impressum":
+      content = createPageContent("Impressum", configData.impressum);
+      break;
+    case "datenschutz":
+      content = createPageContent("Datenschutz", configData.datenschutz);
+      break;
+    case "beschreibung":
+      content = createPageContent("Über diese App", configData.beschreibung);
+      break;
+    default:
+      content = createPageContent("Fehler", "Seite nicht gefunden.");
+  }
 
   document.getElementById("main-content").innerHTML = content;
+  console.log(content);
 }
 
 function createPageContent(title, content = "Informationen nicht verfügbar.") {
@@ -99,12 +120,15 @@ function createPageContent(title, content = "Informationen nicht verfügbar.") {
 }
 
 function setupBurgerMenu() {
-  document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
-    const pageName = link.getAttribute("data-page") || link.getAttribute("href").replace('#', '').trim();
-    if (pageName) { // Stelle sicher, dass pageName gültig ist
+  document.querySelectorAll(".navbar-nav .nav-link").forEach((link) => {
+    const pageName =
+      link.getAttribute("data-page") ||
+      link.getAttribute("href").replace("#", "").trim();
+    if (pageName) {
+      // Stelle sicher, dass pageName gültig ist
       link.addEventListener("click", (event) => {
-        event.preventDefault();  // Verhindere das standardmäßige Link-Verhalten
-        loadPage(pageName);  // Lade die entsprechende Seite
+        event.preventDefault(); // Verhindere das standardmäßige Link-Verhalten
+        loadPage(pageName); // Lade die entsprechende Seite
 
         const offcanvasNavbar = document.getElementById("offcanvasNavbar");
         const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar);
