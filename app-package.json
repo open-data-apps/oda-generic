@@ -1,32 +1,28 @@
 {
   "app-entwickler": "12343",
   "app-entwickler-name": "ondics-gmbh",
-  "name-in-url": "Generic",
-  "name": "Generic",
+  "name-in-url": "generic",
+  "name": "Generic Open Data App",
   "version": "1.0.0",
   "odas-app-icon": "assets/odas-app-icon.png",
   "app-icon": "assets/app-icon.png",
-  "kurzbeschreibung": "",
+  "kurzbeschreibung": "Diese Open Data App ist Anschauungsobjekt und Musterbeispiel für weitere Apps.",
   "beschreibung": [
-    "Die App zeigt eine generische App an mit ",
-    "den jeweils definierten Config Daten. Die Daten werden aus einem Open ",
-    "Data Portal bezogen oder werden lokal von einem Preset bezogen. ",
-    "Die Daten müssen in einem Open Data Portal ",
-    "wie folgt aufgebaut sein: \n",
-    "* Datensatz: ",
-    "* Ressourcen: ",
+    "Die Open Data App ist Musterbeispiel für weitere Apps. Inhaltlich macht sie ",
+    "fast nichts, sondern zeigt nur die Config Daten an. ",
+    "Die Daten werden aus einem Open Data Portal bezogen. ",
     ""
   ],
   "screenshots": [
     "/assets/Desktop_Screenshot.png",
     "/assets/Mobile_Screenshot.png"
   ],
-  "apiVersion": "1",
+  "api-version": "1",
   "instanz-config": {
     "seitentitel": {
       "label": "Seitentitel",
       "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt",
-      "default": "Generic",
+      "default": "Generic ODA",
       "format": {
         "typ": "string",
         "laenge": 50
@@ -35,8 +31,8 @@
     },
     "lizenz": {
       "label": "Lizenz",
-      "hilfe": "Hier muss der Lizenzkey eingetragen werden.",
-      "default": "",
+      "hilfe": "Angabe der Lizenz, die für die Nutzung der App gilt.",
+      "default": "Open Software License (OSL)",
       "format": {
         "typ": "string",
         "laenge": 50
@@ -46,7 +42,7 @@
     "titel": {
       "label": "Titel",
       "hilfe": "Der Titel wird in der Titelzeile der App angezeigt",
-      "default": "Generic App",
+      "default": "Generic Open Data App",
       "format": {
         "typ": "string",
         "laenge": 50
