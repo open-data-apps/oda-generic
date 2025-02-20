@@ -74,7 +74,19 @@
       "format": {
         "typ": "html"
       },
-      "default": "Die Generic-App zeigt die jeweils definierten Configs.\nDie Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, den Datenbestend immer sofort zu aktualisieren. \n##App-Anbieter\nDie App wird bereit gestellt von <a href=\"{{anbieter.url}}\"><{{anbieter.name}}>\nDie Daten kommen aus  unserem Open Data Portal <a href=\"{{odp.url}}\"><{{odp.name}}> geladen\n##Datenquelle\nDie Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.datensatz-url}}\"><{{appinstanz.datensatz-name}}> geladen.\n## App-Entwickler\n Die App wurde entwickelt von <a href=\"{{app.developer-url}}\"><{{app.developer-name}}>. App-Version: {{app.version}}.\n## Open Data App Store\nDer Open Data App Store betrieben von <a href=\"{{odas.betreiber.url}}\"><{{odas.betreiber.name}}>\n",
+      "default": [
+        "Die Generic-App zeigt die jeweils definierten Configs.",
+        "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, den Datenbestend immer sofort zu aktualisieren. ",
+        "##App-Anbieter",
+        "Die App wird bereit gestellt von <a href=\"{{anbieter.url}}\"><{{anbieter.name}}>",
+        "Die Daten kommen aus  unserem Open Data Portal <a href=\"{{odp.url}}\"><{{odp.name}}> geladen",
+        "##Datenquelle",
+        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.datensatz-url}}\"><{{appinstanz.datensatz-name}}> geladen.",
+        "## App-Entwickler",
+        "Die App wurde entwickelt von <a href=\"{{app.developer-url}}\"><{{app.developer-name}}>. App-Version: {{app.version}}.",
+        "## Open Data App Store",
+        "Der Open Data App Store betrieben von <a href=\"{{odas.betreiber.url}}\"><{{odas.betreiber.name}}>\""
+      ],
       "erforderlich": "ja"
     },
     "impressum": {
@@ -83,7 +95,15 @@
       "format": {
         "typ": "html"
       },
-      "default": "{{anbieter.name}}\n{{anbieter.kontakt-bezeichnung}}\n{{anbieter.strasse}}\n{{anbieter.plzort}}\nTelefon: {{anbieter.tel}}\nFax: {{anbieter.fax}}\nWebsite: <a href='{{anbieter.url-extern}}' target='_blank'>{{anbieter.url-extern}}</a>",
+      "default": [
+        "{{anbieter.name}}",
+        "{{anbieter.kontakt-bezeichnung}}",
+        "{{anbieter.strasse}}",
+        "{{anbieter.plzort}}",
+        "Telefon: {{anbieter.tel}}",
+        "Fax: {{anbieter.fax}}",
+        "Website: <a href='{{anbieter.url-extern}}' target='_blank'>{{anbieter.url-extern}}</a>"
+      ],
       "erforderlich": "ja"
     },
     "datenschutz": {
