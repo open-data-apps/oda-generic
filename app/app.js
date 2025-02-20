@@ -19,6 +19,8 @@
  * @param {Object} configdata - Alle Konfigurationsdaten der App
  * @enclosingHtmlDivElement - HTML Knoten des umschließenden Tags
  * @returns {string | NULL} - darzustellendes HTML oder NULL wenn HTML Knoten direkt manipuliert wurde
+ *
+ * Ein Beispiel Prompt zu KI Generierung ist unter assets/App-Prompt.txt
  */
 
 function app(configdata = [], enclosingHtmlDivElement) {
