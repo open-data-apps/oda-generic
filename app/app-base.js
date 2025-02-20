@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const configUrl = getConfigUrl();
   try {
     configData = await fetchConfig(configUrl); // Zuweisung zu globaler Variable
-    console.log(configData);
+    document.head.innerHTML += addToHead();
     updatePageContent();
     loadPage("startseite");
   } catch (err) {
@@ -90,10 +90,9 @@ function updatePageContent() {
 
 async function loadPage(page) {
   let content;
-  console.log(page);
   switch (page) {
     case "startseite":
-      content = app(configData);
+      content = app(configData, document.getElementById("main-content"));
       break;
     case "kontakt":
       content = createPageContent("Kontakt", configData.kontakt);
@@ -110,9 +109,9 @@ async function loadPage(page) {
     default:
       content = createPageContent("Fehler", "Seite nicht gefunden.");
   }
-
-  document.getElementById("main-content").innerHTML = content;
-  console.log(content);
+  if (content) {
+    document.getElementById("main-content").innerHTML = content;
+  }
 }
 
 function createPageContent(title, content = "Informationen nicht verfügbar.") {
