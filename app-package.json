@@ -127,7 +127,7 @@
       "format": {
         "typ": "url"
       },
-      "default": "{{appconfig.datensatz-url}}",
+      "default": "",
       "beispiel": "",
       "erforderlich": "ja"
     },
@@ -147,7 +147,7 @@
       "format": {
         "typ": "url"
       },
-      "default": "{{appconfig.datensatz-apiurl}}",
+      "default": "",
       "beispiel": "",
       "erforderlich": "ja"
     },
