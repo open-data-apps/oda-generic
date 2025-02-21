@@ -63,25 +63,31 @@
       "label": "Kontakt",
       "hilfe": "Der Text wird im Menüpunkt 'Kontakt' anzeigt",
       "format": {
-        "typ": "html"
+        "typ": "markdown"
       },
-      "default": "Tel.: <a href='tel:{{anbieter.telcode}}'>{{anbieter.tel}}</a><br>Fax: <a href='tel:{{anbieter.fax}}'>{{anbieter.faxcode}}</a><br>E-Mail: <a href='mailto:{{anbieter.email}}'>{{anbieter.email}}</a>",
+      "default": [
+        "Bei Fragen zur App wenden Sie sich bitte an: ",
+        "Tel.: <a href='tel:{{anbieter.telcode}}'>{{anbieter.tel}}</a>",
+        "Fax: <a href='tel:{{anbieter.fax}}'>{{anbieter.faxcode}}</a>",
+        "E-Mail: <a href='mailto:{{anbieter.email}}'>{{anbieter.email}}</a>"
+      ],
       "erforderlich": "ja"
     },
     "beschreibung": {
       "label": "Beschreibung",
       "hilfe": "Der Text wird im Menüpunkt 'Über diese App' anzeigt",
       "format": {
-        "typ": "html"
+        "typ": "markdown"
       },
       "default": [
         "Die Generic-App zeigt die jeweils definierten Configs.",
-        "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, den Datenbestend immer sofort zu aktualisieren. ",
-        "##App-Anbieter",
+        "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, ",
+        "den Datenbestend immer sofort zu aktualisieren.\n ",
+        "## App-Anbieter",
         "Die App wird bereit gestellt von <a href=\"{{anbieter.url}}\"><{{anbieter.name}}>",
-        "Die Daten kommen aus  unserem Open Data Portal <a href=\"{{odp.url}}\"><{{odp.name}}> geladen",
-        "##Datenquelle",
-        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.datensatz-url}}\"><{{appinstanz.datensatz-name}}> geladen.",
+        "## Daten",
+        "Die Daten kommen aus  unserem Open Data Portal <a href=\"{{odp.url}}\"><{{odp.name}}>",
+        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.datensatz-url}}\"><{{appinstanz.datensatz-name}}>.",
         "## App-Entwickler",
         "Die App wurde entwickelt von <a href=\"{{app.developer-url}}\"><{{app.developer-name}}>. App-Version: {{app.version}}.",
         "## Open Data App Store",
@@ -93,7 +99,7 @@
       "label": "Impressum",
       "hilfe": "Der Text wird im Menüpunkt 'Impressum' anzeigt",
       "format": {
-        "typ": "html"
+        "typ": "markdown"
       },
       "default": [
         "{{anbieter.name}}",
@@ -110,7 +116,7 @@
       "label": "Datenschutz",
       "hilfe": "Der Text wird im Menüpunkt 'Datenschutz' anzeigt",
       "format": {
-        "typ": "html"
+        "typ": "markdown"
       },
       "default": "Alle Daten sind geschützt.",
       "erforderlich": "ja"
