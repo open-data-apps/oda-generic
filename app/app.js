@@ -13,7 +13,7 @@
  * ConfigData ist ein JSON enthält die Referenz
  * auf die Daten im CKAN Open Data Portal:
  *     {
- *         "apiUrl": "https://open-data-musterstadt.ckan.de/dataset/db92da8e40f9/download/formular_multitemplate.json"
+ *         "apiurl": "https://open-data-musterstadt.ckan.de/dataset/db92da8e40f9/download/formular_multitemplate.json"
  *     }
  *
  * @param {Object} configdata - Alle Konfigurationsdaten der App
@@ -31,12 +31,7 @@ function app(configdata = [], enclosingHtmlDivElement) {
     "</div>";
 }
 
-/* 
- * Diese Funktion kann Bibliotheken und benötigte Skripte laden. 
- * Sie hängt den zurückgegebenen HTML Code in die Head Section an. 
-
- * @returns {string} - HTML mit script, link, etc. Tags
+/*
+ * Diese Funktion kann Bibliotheken und benötigte Skripte laden.
  */
-function addToHead() {
-  return ``;
-}
+function addToHead() {}
