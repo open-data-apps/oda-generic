@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const configUrl = getConfigUrl();
   try {
     configData = await fetchConfig(configUrl); // Zuweisung zu globaler Variable
-    document.head.innerHTML += addToHead();
+    addToHead();
     updatePageContent();
     loadPage("startseite");
   } catch (err) {
@@ -17,11 +17,13 @@ function getConfigUrl() {
   const urlString = window.location.href;
   const url = new URL(urlString);
   let configUrl = `${urlString}config`;
+  /*
   if (["127.0.0.1", "localhost"].includes(url.hostname)) {
     configUrl = "../odas-config/config.json";
   } else if (["10.0.0.142"].includes(url.hostname)) {
     configUrl = "/odas-config/config.json";
   }
+  */
   return configUrl;
 }
 
