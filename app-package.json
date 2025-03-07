@@ -1,5 +1,5 @@
 {
-  "app-entwickler": "12343",
+  "app-entwickler-id": "12343",
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "generic",
   "name": "Generic Open Data App",
@@ -8,6 +8,7 @@
   "app-icon": "assets/app-icon.png",
   "kurzbeschreibung": "Diese Open Data App ist Anschauungsobjekt und Musterbeispiel für weitere Apps.",
   "beschreibung": [
+    "_multiline_",
     "Die Open Data App ist Musterbeispiel für weitere Apps. Inhaltlich macht sie ",
     "fast nichts, sondern zeigt nur die Config Daten an. ",
     "Die Daten werden aus einem Open Data Portal bezogen. ",
@@ -66,6 +67,7 @@
         "typ": "markdown"
       },
       "default": [
+        "_multiline_",
         "Bei Fragen zur App wenden Sie sich bitte an: ",
         "Tel.: <a href='tel:{{anbieter.telcode}}'>{{anbieter.tel}}</a>",
         "Fax: <a href='tel:{{anbieter.fax}}'>{{anbieter.faxcode}}</a>",
@@ -80,6 +82,7 @@
         "typ": "markdown"
       },
       "default": [
+        "_multiline_",
         "Die Generic-App zeigt die jeweils definierten Configs.",
         "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, ",
         "den Datenbestend immer sofort zu aktualisieren. ",
@@ -102,6 +105,7 @@
         "typ": "markdown"
       },
       "default": [
+        "_multiline_",
         "{{anbieter.name}}",
         "{{anbieter.kontakt-bezeichnung}}",
         "{{anbieter.strasse}}",
@@ -118,7 +122,7 @@
       "format": {
         "typ": "markdown"
       },
-      "default": "Alle Daten sind geschützt.",
+      "default": ["_multiline_", "Alle Daten sind geschützt."],
       "erforderlich": "ja"
     },
     "urlDaten": {
