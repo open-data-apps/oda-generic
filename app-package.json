@@ -82,7 +82,7 @@
       "default": [
         "Die Generic-App zeigt die jeweils definierten Configs.",
         "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, ",
-        "den Datenbestend immer sofort zu aktualisieren.\n ",
+        "den Datenbestend immer sofort zu aktualisieren. ",
         "## App-Anbieter",
         "Die App wird bereit gestellt von <a href=\"{{anbieter.url}}\"><{{anbieter.name}}>",
         "## Daten",
