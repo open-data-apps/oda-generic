@@ -1,5 +1,5 @@
 #
-# ODAS Generic App
+# ODAS Formular App
 # (C) Ondics, 2025
 #
 
@@ -23,7 +23,7 @@ DATE := $(shell date '+%Y%m%d')
 .PHONY: help build stats
 
 help:
-	@echo "# ODAS Generic App"
+	@echo "# ODAS Formular App"
 	@echo "# Ondics, 2025"
 	@echo "# dir = ${current_dir}"
 	@echo Befehle: make ...
@@ -58,7 +58,11 @@ ps: ## what's up?
 
 config: ## show docker-compose config 
 	${DC} config
-	
+
 zip: ## App zur Auslieferung vorbereiten
 	zip -r ${current_dir}.zip \
 	 	app assets app-package.json CHANGELOG.md
+
+check-app: ## App prüfen mit Skript aus ODAS-Tools
+	echo "App prüfen"
+	./../odas-tools/app-check.sh
