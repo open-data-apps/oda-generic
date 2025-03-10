@@ -4,7 +4,7 @@
   "name-in-url": "generic",
   "name": "Generic Open Data App",
   "version": "1.0.0",
-  "odas-app-icon": "assets/odas-app-icon.png",
+  "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/app-icon.png",
   "kurzbeschreibung": "Diese Open Data App ist Anschauungsobjekt und Musterbeispiel für weitere Apps.",
   "beschreibung": [
