@@ -37,6 +37,10 @@ http://localhost:8089
 
 Weil die App mit localhost gestartet wird wird die Konfiguration lokal geladen.
 
+Was bei der App Entwicklung beachtet werden sollte steht in der [ODA Spezifikation](https://open-data-apps.github.io/open-data-app-docs/)
+
+Nicht vergessen: Bevor die App in den ODAS eingereicht wird muss die `app-package.json` noch angepasst werden.
+
 ### Aufbau der App
 
 Inhaltsbereich wird in app.js erstellt. Ihr kann der eigene Code implementiert werden.
