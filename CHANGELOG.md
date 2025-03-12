@@ -1,5 +1,9 @@
 # Changelog
 
+## ToDo
+
+- Config über Nginx laden
+
 ## 21.02.2025
 
 - ENH: app-package mit Multiline Strings
