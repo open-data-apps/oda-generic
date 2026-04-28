@@ -6,7 +6,7 @@ Die App Generic bietet eine generische Vorschau einer ODAS App.
 
 Die App ist eine "ODAP App V1".
 
-##Systemvorraussetzungen
+## Systemvorraussetzungen
 
 - Docker/Docker compose
 - Make
@@ -55,4 +55,4 @@ Inhaltsbereich wird in app.js erstellt. Ihr kann der eigene Code implementiert w
 
 ## Autor
 
-(C) 2025, Ondics GmbH
+(C) 2026, Ondics GmbH

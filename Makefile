@@ -1,6 +1,6 @@
 #
-# ODAS Formular App
-# (C) Ondics, 2025
+# ODAS Generic App
+# (C) Ondics, 2026
 #
 
 # aktuelles Dir ist docker-compose project name
@@ -23,8 +23,8 @@ DATE := $(shell date '+%Y%m%d')
 .PHONY: help build stats
 
 help:
-	@echo "# ODAS Formular App"
-	@echo "# Ondics, 2025"
+	@echo "# ODAS Generic App"
+	@echo "# Ondics, 2026"
 	@echo "# dir = ${current_dir}"
 	@echo Befehle: make ...
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
