@@ -6,6 +6,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     configData = await fetchConfig(configUrl); // Zuweisung zu globaler Variable
     addToHead();
     updatePageContent();
+    // Überprüfe, ob ein Custom CSS Code oder Custom Branding CSS File in der Config vorhanden ist
+    if (
+      configData.brandingCSSFile &&
+      configData.brandingCSSFile.trim().length > 0
+    ) {
+      const linkElem = document.createElement("link");
+      linkElem.rel = "stylesheet";
+      linkElem.href = configData.brandingCSSFile;
+      document.head.appendChild(linkElem);
+      console.log("Custom Branding CSS wurde angewendet.");
+    } else if (
+      configData.brandingCSS &&
+      configData.brandingCSS.trim().length > 0
+    ) {
+      const customStyle = document.createElement("style");
+      customStyle.innerHTML = configData.brandingCSS;
+      document.head.appendChild(customStyle);
+      console.log("Custom Branding CSS wurde angewendet.");
+    } else {
+      console.log("Kein Custom Branding CSS in der Config gefunden.");
+    }
     loadPage("startseite");
   } catch (err) {
     console.error("Fehler:", err);
@@ -17,7 +38,7 @@ function getConfigUrl() {
   const urlString = window.location.href;
   const url = new URL(urlString);
   let configUrl = `${urlString}config`;
-  /* Zum testen mit docker oder Live Server Kommentar entfernen
+  /* Zum testen mit docker oder Live Server Kommentar entfernen 
   if (["127.0.0.1", "localhost"].includes(url.hostname)) {
     configUrl = "../odas-config/config.json";
   } else if (["10.0.0.142"].includes(url.hostname)) {
@@ -69,7 +90,7 @@ function updatePageContent() {
     titel = "",
     seitentitel = "",
     icon = "logo.png",
-    fusszeile = "&copy; 2025 ODAS Karten App. Alle Rechte vorbehalten.",
+    fusszeile = "&copy; 2026 ODAS App. Alle Rechte vorbehalten.",
   } = configData;
 
   const elementMappings = {

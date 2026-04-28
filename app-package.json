@@ -5,19 +5,29 @@
   "name": "Generic Open Data App",
   "version": "1.0.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
-  "app-icon": "assets/app-icon.png",
-  "kurzbeschreibung": "Diese Open Data App ist Anschauungsobjekt und Musterbeispiel für weitere Apps.",
+  "app-icon": "assets/odas-app-icon.svg",
+  "kurzbeschreibung": "Generische Open-Data-App als Anschauungsobjekt und Vorlage für weitere ODAS-Apps.",
   "beschreibung": [
     "_multiline_",
-    "Die Open Data App ist Musterbeispiel für weitere Apps. Inhaltlich macht sie ",
-    "fast nichts, sondern zeigt nur die Config Daten an. ",
-    "Die Daten werden aus einem Open Data Portal bezogen. ",
+    "Die Generic-App ist ein Musterbeispiel für weitere Open-Data-Apps.",
+    "Inhaltlich stellt sie primär die bereitgestellten Konfigurationsdaten dar.",
+    "Die Daten werden aus einem Open Data Portal bezogen.",
     ""
   ],
+  "tags-funktion": ["App-Entwicklung"],
+  "tags-dateityp": ["*"],
+  "tags-datenart": ["Beliebig"],
   "screenshots": [
-    "/assets/Desktop_Screenshot.png",
-    "/assets/Mobile_Screenshot.png"
+    "assets/Desktop_Screenshot.png",
+    "assets/Mobile_Screenshot.png"
   ],
+  "daten": {
+    "beschreibung": "Die Generic-App verarbeitet konfigurierbare Open-Data-Ressourcen aus dem Open Data Portal (z.B. JSON- oder CSV-Endpunkte).",
+    "schema": "",
+    "beispiel": "",
+    "beispiel-url": ""
+  },
+  "branding-css": "",
   "api-version": "1",
   "instanz-config": {
     "seitentitel": {
@@ -53,6 +63,7 @@
     "icon": {
       "label": "App-Icon",
       "hilfe": "Das Icon wird links oben in der Titelzeile angezeigt",
+      "default": "{{{odp.logo}}}",
       "format": {
         "typ": "image",
         "hoehe": 100,
@@ -68,33 +79,34 @@
       },
       "default": [
         "_multiline_",
-        "Bei Fragen zur App wenden Sie sich bitte an: ",
-        "Tel.: <a href='tel:{{anbieter.telcode}}'>{{anbieter.tel}}</a>",
-        "Fax: <a href='tel:{{anbieter.fax}}'>{{anbieter.faxcode}}</a>",
-        "E-Mail: <a href='mailto:{{anbieter.email}}'>{{anbieter.email}}</a>"
+        "Sie sind zufrieden mit der App oder haben Anregungen, Verbesserungen oder Hinweise, die Sie uns mitteilen möchten?",
+        "Dann richten Sie sich gerne an uns. Wir freuen uns über alle Nachrichten. ",
+        "Ihre Nachrichten können Sie uns mitteilen über:",
+        "Tel.: <a href='tel:{{odp.anbieter.telcode}}'>{{odp.anbieter.tel}}</a>",
+        "E-Mail: <a href='mailto:{{odp.anbieter.email}}'>{{odp.anbieter.email}}</a>"
       ],
       "erforderlich": "ja"
     },
     "beschreibung": {
       "label": "Beschreibung",
-      "hilfe": "Der Text wird im Menüpunkt 'Über diese App' anzeigt",
+      "hilfe": "Der Text wird im Menüpunkt 'Über diese App' angezeigt",
       "format": {
         "typ": "markdown"
       },
       "default": [
         "_multiline_",
         "Die Generic-App zeigt die jeweils definierten Configs.",
-        "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, ",
-        "den Datenbestend immer sofort zu aktualisieren. ",
+        "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir,",
+        "den Datenbestand immer sofort zu aktualisieren.",
         "## App-Anbieter",
-        "Die App wird bereit gestellt von <a href=\"{{anbieter.url}}\"><{{anbieter.name}}>",
-        "## Daten",
-        "Die Daten kommen aus  unserem Open Data Portal <a href=\"{{odp.url}}\"><{{odp.name}}>",
-        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.datensatz-url}}\"><{{appinstanz.datensatz-name}}>.",
-        "## App-Entwickler",
-        "Die App wurde entwickelt von <a href=\"{{app.developer-url}}\"><{{app.developer-name}}>. App-Version: {{app.version}}.",
+        "Die App wird bereit gestellt von <a href=\"{{odp.anbieter.url}}\">{{odp.anbieter.name}}</a>",
+        "## Datenquelle",
+        "Die Daten kommen aus unserem Open Data Portal <a href=\"{{odp.url}}\">{{odp.name}}</a>",
+        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.apiurl}}\">{{appinstanz.apiurl}}</a>.",
+        "## Über diese App",
+        "Die App wurde entwickelt von <a href=\"{{app.developer.url}}\">{{app.developer.name}}</a>. App-Version: {{app.version}}.",
         "## Open Data App Store",
-        "Der Open Data App Store betrieben von <a href=\"{{odas.betreiber.url}}\"><{{odas.betreiber.name}}>\""
+        "Der Open Data App Store betrieben von <a href=\"{{odas.betreiber.url}}\">{{odas.betreiber.name}}</a>"
       ],
       "erforderlich": "ja"
     },
@@ -106,13 +118,26 @@
       },
       "default": [
         "_multiline_",
-        "{{anbieter.name}}",
-        "{{anbieter.kontakt-bezeichnung}}",
-        "{{anbieter.strasse}}",
-        "{{anbieter.plzort}}",
-        "Telefon: {{anbieter.tel}}",
-        "Fax: {{anbieter.fax}}",
-        "Website: <a href='{{anbieter.url-extern}}' target='_blank'>{{anbieter.url-extern}}</a>"
+        "### Anbieter",
+        "",
+        "{{{odp.anbieter.orgName}}}",
+        "{{{odp.anbieter.orgUnit}}}",
+        "",
+        "{{odp.anbieter.strasse}}",
+        "{{odp.anbieter.plzort}}",
+        "",
+        "Website: <a href='{{odp.anbieter.url-extern}}' target='_blank'>{{odp.anbieter.url-extern}}</a>",
+        "",
+        "### Ansprechpartner",
+        "",
+        "{{odp.anbieter.kontakt-bezeichnung}}",
+        "{{odp.anbieter.name}}",
+        "",
+        "### Kontakt",
+        "",
+        "Tel.: {{odp.anbieter.tel}}",
+        "E-Mail: <a href='mailto:{{odp.anbieter.email}}'>{{odp.anbieter.email}}</a>",
+        ""
       ],
       "erforderlich": "ja"
     },
@@ -142,14 +167,15 @@
         "typ": "String",
         "laenge": 50
       },
-      "default": "(C) Copyright {{jahr}} | App & Daten: {{anbieter.name}} | App-Entwickler: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
+      "default": "(C) Copyright {{jahr}} | App & Daten: {{odp.anbieter.name}} | App-Entwickler: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
       "erforderlich": "ja"
     },
-    "apiUrl": {
-      "label": "URL zur Datensatz-API",
-      "hilfe": "Von dieser API-URL zum Datensatz werden die Ressoucen bezogen",
+    "apiurl": {
+      "label": "URL zu den Daten",
+      "hilfe": "Von dieser URL zum Datensatz werden die Ressourcen bezogen",
       "format": {
-        "typ": "url"
+        "typ": "url",
+        "laenge": 255
       },
       "default": "",
       "beispiel": "",

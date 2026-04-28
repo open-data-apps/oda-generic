@@ -23,7 +23,7 @@ header {
   object-fit: contain;
   /* Optional: Center the image within the container if there's extra space */
   display: block;
-  margin: 0 auto;
+  margin: 0;
 }
 .title {
   font-size: 2.2rem;
@@ -63,7 +63,6 @@ body {
 
 #main-content {
   flex: 1;
-  max-width: 62.5%;
 }
 
 /* Footer Styling */
