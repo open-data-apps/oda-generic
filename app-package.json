@@ -164,7 +164,7 @@
       "label": "Fußzeile",
       "hilfe": "Wird auf der Website unten in der Fusszeile angezeigt.",
       "format": {
-        "typ": "String",
+        "typ": "string",
         "laenge": 50
       },
       "default": "(C) Copyright {{jahr}} | App & Daten: {{odp.anbieter.name}} | App-Entwickler: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
@@ -179,6 +179,17 @@
       },
       "default": "",
       "beispiel": "",
+      "erforderlich": "ja"
+    },
+    "proxyAktiv": {
+      "label": "ODAS-Proxy aktivieren",
+      "hilfe": "Aktiviert Datenabrufe ueber den ODAS-Proxy. Echte Proxy-Aufrufe funktionieren nur im ODAS-Live-System.",
+      "format": {
+        "typ": "dropdown",
+        "optionen": ["nein", "ja"],
+        "default": "nein"
+      },
+      "default": "nein",
       "erforderlich": "ja"
     },
     "sprache": {

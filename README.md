@@ -26,6 +26,17 @@ Die APP ist eine Single Page Application Webapp. Mit:
 Die Konfiguration wird vom ODAS geladen.
 
 Die APP zeigt Ihre Konfiguration im JSON Format an.
+Zusätzlich zeigt sie an, ob der ODAS-Proxy über die Instanz-Konfiguration aktiviert ist.
+
+## ODAS-Proxy
+
+Die Generic-App enthält Proxy-Hilfsfunktionen für spätere Datenabrufe in konkreten Apps:
+
+- `proxyAktiv: "nein"` lädt Ressourcen direkt per `fetch`.
+- `proxyAktiv: "ja"` lädt Ressourcen über den ODAS-Proxy-Endpunkt `odp-data`.
+
+Echte Proxy-Aufrufe funktionieren nur im ODAS-Live-System. Lokal kann nur geprüft werden,
+ob die Konfiguration geladen und der Proxy-Status korrekt angezeigt wird.
 
 ## Entwicklung
 
