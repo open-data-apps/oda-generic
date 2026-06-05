@@ -27,7 +27,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       console.log("Kein Custom Branding CSS in der Config gefunden.");
     }
-    loadPage("startseite");
+    // Router initialisieren
+    window.addEventListener("hashchange", handleRouting);
+
+    const initialPage = getPageFromHash();
+    if (window.location.hash !== `#${initialPage}`) {
+      window.location.hash = `#${initialPage}`;
+    } else {
+      handleRouting();
+    }
   } catch (err) {
     console.error("Fehler:", err);
   }
@@ -160,4 +168,32 @@ function setupBurgerMenu() {
       });
     }
   });
+}
+
+function getPageFromHash() {
+  const hash = window.location.hash.replace("#", "").trim();
+  const validPages = ["startseite", "beschreibung", "kontakt", "datenschutz", "impressum"];
+  if (validPages.includes(hash)) {
+    return hash;
+  }
+  return "startseite";
+}
+
+function updateActiveNavLink(page) {
+  document.querySelectorAll(".navbar-nav .nav-link").forEach((link) => {
+    const pageName =
+      link.getAttribute("data-page") ||
+      link.getAttribute("href").replace("#", "").trim();
+    if (pageName === page) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
+}
+
+function handleRouting() {
+  const page = getPageFromHash();
+  loadPage(page);
+  updateActiveNavLink(page);
 }
