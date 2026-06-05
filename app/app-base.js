@@ -38,14 +38,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   } catch (err) {
     console.error("Fehler:", err);
+    const mainContent = document.getElementById("main-content");
+    if (mainContent) {
+      mainContent.innerHTML = `
+        <div class="alert alert-danger my-4" role="alert">
+          <h4 class="alert-heading">Fehler beim Laden der App</h4>
+          <p>Die Konfigurationsdatei der App konnte nicht geladen oder verarbeitet werden.</p>
+          <hr>
+          <p class="mb-0">Details: ${err.message}</p>
+        </div>
+      `;
+    }
   }
   setupBurgerMenu();
 });
 
 function getConfigUrl() {
-  const urlString = window.location.href;
-  const url = new URL(urlString);
-  let configUrl = `${urlString}config`;
+  const url = new URL(window.location.href);
+  
+  // Clean query and hash
+  url.search = "";
+  url.hash = "";
+  
+  // Ensure the pathname refers to the directory and not a filename (e.g. index.html)
+  let pathname = url.pathname;
+  if (!pathname.endsWith("/")) {
+    const lastSlashIndex = pathname.lastIndexOf("/");
+    if (lastSlashIndex !== -1) {
+      pathname = pathname.substring(0, lastSlashIndex + 1);
+    }
+  }
+  
+  let configUrl = url.origin + pathname + "config";
+
   /* Zum testen mit docker oder Live Server Kommentar entfernen 
   if (["127.0.0.1", "localhost"].includes(url.hostname)) {
     configUrl = "../odas-config/config.json";
