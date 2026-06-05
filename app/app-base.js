@@ -98,7 +98,7 @@ function updatePageContent() {
     titel = "",
     seitentitel = "",
     icon = "logo.png",
-    fusszeile = "&copy; 2026 ODAS App. Alle Rechte vorbehalten.",
+    fusszeile = "© 2026 ODAS App. Alle Rechte vorbehalten.",
   } = configData;
 
   const elementMappings = {
@@ -110,8 +110,11 @@ function updatePageContent() {
 
   Object.entries(elementMappings).forEach(([id, content]) => {
     const element = document.getElementById(id);
+    if (!element) return; // Existenz-Check
     if (id === "logo-icon") {
       element.src = content;
+    } else if (id === "footer-text") {
+      element.innerHTML = content;
     } else {
       element.textContent = content;
     }
@@ -150,18 +153,18 @@ function createPageContent(title, content = "Informationen nicht verfügbar.") {
 
 function setupBurgerMenu() {
   document.querySelectorAll(".navbar-nav .nav-link").forEach((link) => {
+    const href = link.getAttribute("href");
     const pageName =
       link.getAttribute("data-page") ||
-      link.getAttribute("href").replace("#", "").trim();
+      (href ? href.replace("#", "").trim() : "");
     if (pageName) {
-      // Stelle sicher, dass pageName gültig ist
-      link.addEventListener("click", (event) => {
-        // Kein preventDefault(), damit der Hash sich ändert
+      link.addEventListener("click", () => {
         const offcanvasNavbar = document.getElementById("offcanvasNavbar");
-        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar);
-
-        if (offcanvas && offcanvasNavbar.classList.contains("show")) {
-          offcanvas.hide();
+        if (offcanvasNavbar && typeof bootstrap !== "undefined") {
+          const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar);
+          if (offcanvas && offcanvasNavbar.classList.contains("show")) {
+            offcanvas.hide();
+          }
         }
       });
     }
@@ -179,9 +182,10 @@ function getPageFromHash() {
 
 function updateActiveNavLink(page) {
   document.querySelectorAll(".navbar-nav .nav-link").forEach((link) => {
+    const href = link.getAttribute("href");
     const pageName =
       link.getAttribute("data-page") ||
-      link.getAttribute("href").replace("#", "").trim();
+      (href ? href.replace("#", "").trim() : "");
     if (pageName === page) {
       link.classList.add("active");
     } else {
