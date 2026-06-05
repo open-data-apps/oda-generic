@@ -192,6 +192,10 @@ function updateActiveNavLink(page) {
 
 function handleRouting() {
   const page = getPageFromHash();
+  if (window.location.hash !== `#${page}`) {
+    window.location.hash = `#${page}`;
+    return;
+  }
   loadPage(page);
   updateActiveNavLink(page);
 }
