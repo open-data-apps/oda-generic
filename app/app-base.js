@@ -156,9 +156,7 @@ function setupBurgerMenu() {
     if (pageName) {
       // Stelle sicher, dass pageName gültig ist
       link.addEventListener("click", (event) => {
-        event.preventDefault(); // Verhindere das standardmäßige Link-Verhalten
-        loadPage(pageName); // Lade die entsprechende Seite
-
+        // Kein preventDefault(), damit der Hash sich ändert
         const offcanvasNavbar = document.getElementById("offcanvasNavbar");
         const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar);
 
