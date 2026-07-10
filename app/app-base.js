@@ -27,71 +27,50 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       console.log("Kein Custom Branding CSS in der Config gefunden.");
     }
-    // Router initialisieren
-    window.addEventListener("hashchange", handleRouting);
+    window.addEventListener("hashchange", () => {
+      handleRouting().catch(renderRuntimeError);
+    });
 
     const initialPage = getPageFromHash();
     if (window.location.hash !== `#${initialPage}`) {
       window.location.hash = `#${initialPage}`;
     } else {
-      handleRouting();
+      await handleRouting();
     }
   } catch (err) {
     console.error("Fehler:", err);
-    const mainContent = document.getElementById("main-content");
-    if (mainContent) {
-      mainContent.innerHTML = `
-        <div class="alert alert-danger my-4" role="alert">
-          <h4 class="alert-heading">Fehler beim Laden der App</h4>
-          <p>Die Konfigurationsdatei der App konnte nicht geladen oder verarbeitet werden.</p>
-          <hr>
-          <p class="mb-0">Details: ${err.message}</p>
-        </div>
-      `;
-    }
+    renderRuntimeError(err);
   }
   setupBurgerMenu();
 });
 
 function getConfigUrl() {
   const url = new URL(window.location.href);
-  
-  // Clean query and hash
+
   url.search = "";
   url.hash = "";
-  
-  // Ensure the pathname refers to the directory and not a filename (e.g. index.html)
+
   let pathname = url.pathname;
   if (!pathname.endsWith("/")) {
     const lastSlashIndex = pathname.lastIndexOf("/");
-    if (lastSlashIndex !== -1) {
+    const lastSegment = pathname.substring(lastSlashIndex + 1);
+    if (lastSegment.includes(".")) {
       pathname = pathname.substring(0, lastSlashIndex + 1);
+    } else {
+      pathname += "/";
     }
   }
-  
+
   let configUrl = url.origin + pathname + "config";
 
-  /* Zum testen mit docker oder Live Server Kommentar entfernen 
   if (["127.0.0.1", "localhost"].includes(url.hostname)) {
     configUrl = "../odas-config/config.json";
   } else if (["10.0.0.142"].includes(url.hostname)) {
     configUrl = "/odas-config/config.json";
-  }*/
+  }
   return configUrl;
 }
 
-/* die Funktion macht aus Multiline-Strings (enden mit einem \)
- * Single Line Strings und dann ein normales Json
- */
-function normalizeJson(extendedJson = "") {
-  console.log(extendedJson);
-  const cleanedString = extendedJson.replace(/\\\s*\n\s*/g, "");
-  return JSON.parse(cleanedString);
-}
-
-/* die Funktion macht aus Multiline-Values (Array of Strings)
- * Single Line Values
- */
 function flattenJson(jsonObj) {
   const result = {};
   for (const key in jsonObj) {
@@ -103,7 +82,7 @@ function flattenJson(jsonObj) {
       value.every((item) => typeof item === "string")
     ) {
       // ...verbinde die Strings zu einem einzigen String
-      result[key] = value.join("");
+      result[key] = normalizeMultilineValue(value);
     } else {
       result[key] = value;
     }
@@ -111,11 +90,45 @@ function flattenJson(jsonObj) {
   return result;
 }
 
+function normalizeMultilineValue(value) {
+  if (!Array.isArray(value)) return value;
+  return value.filter((item) => item !== "_multiline_").join("\n");
+}
+
 async function fetchConfig(url) {
   const response = await fetch(url);
-  if (!response.ok) throw new Error("kann Konfiguration nicht laden");
+  if (!response.ok) {
+    throw new Error(
+      `Konfiguration konnte nicht geladen werden (HTTP ${response.status}).`,
+    );
+  }
   return flattenJson(await response.json());
-  //return normalizeJson(await response.text());
+}
+
+function escapeHtmlForBase(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function renderRuntimeError(error) {
+  const mainContent = document.getElementById("main-content");
+  if (!mainContent) return;
+
+  const details = escapeHtmlForBase(
+    error?.message || error || "Unbekannter Fehler",
+  );
+  mainContent.innerHTML = `
+    <div class="alert alert-danger my-4" role="alert">
+      <h2 class="h4 alert-heading">Fehler beim Laden der App</h2>
+      <p>Die Konfiguration oder der angeforderte Inhalt konnte nicht geladen werden.</p>
+      <hr>
+      <p class="mb-0">Details: ${details}</p>
+    </div>
+  `;
 }
 
 function updatePageContent() {
@@ -150,7 +163,7 @@ async function loadPage(page) {
   let content;
   switch (page) {
     case "startseite":
-      content = app(configData, document.getElementById("main-content"));
+      content = await app(configData, document.getElementById("main-content"));
       break;
     case "kontakt":
       content = createPageContent("Kontakt", configData.kontakt);
@@ -173,7 +186,10 @@ async function loadPage(page) {
 }
 
 function createPageContent(title, content = "Informationen nicht verfügbar.") {
-  return `<div class="col" id="secondarySites"><h2>${title}</h2><p>${content}</p></div>`;
+  const pageContent = Array.isArray(content)
+    ? normalizeMultilineValue(content)
+    : content;
+  return `<div class="col" id="secondarySites"><h2>${title}</h2><div>${pageContent}</div></div>`;
 }
 
 function setupBurgerMenu() {
@@ -198,7 +214,13 @@ function setupBurgerMenu() {
 
 function getPageFromHash() {
   const hash = window.location.hash.replace("#", "").trim();
-  const validPages = ["startseite", "beschreibung", "kontakt", "datenschutz", "impressum"];
+  const validPages = [
+    "startseite",
+    "beschreibung",
+    "kontakt",
+    "datenschutz",
+    "impressum",
+  ];
   if (validPages.includes(hash)) {
     return hash;
   }
@@ -219,12 +241,12 @@ function updateActiveNavLink(page) {
   });
 }
 
-function handleRouting() {
+async function handleRouting() {
   const page = getPageFromHash();
   if (window.location.hash !== `#${page}`) {
     window.location.hash = `#${page}`;
     return;
   }
-  loadPage(page);
+  await loadPage(page);
   updateActiveNavLink(page);
 }
