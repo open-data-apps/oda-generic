@@ -82,8 +82,8 @@
         "Sie sind zufrieden mit der App oder haben Anregungen, Verbesserungen oder Hinweise, die Sie uns mitteilen möchten?",
         "Dann richten Sie sich gerne an uns. Wir freuen uns über alle Nachrichten. ",
         "Ihre Nachrichten können Sie uns mitteilen über:",
-        "Tel.: <a href='tel:{{odp.anbieter.telcode}}'>{{odp.anbieter.tel}}</a>",
-        "E-Mail: <a href='mailto:{{odp.anbieter.email}}'>{{odp.anbieter.email}}</a>"
+        "Tel.: <a href='tel:{{{odp.anbieter.telcode}}}'>{{odp.anbieter.tel}}</a>",
+        "E-Mail: <a href='mailto:{{{odp.anbieter.email}}}'>{{odp.anbieter.email}}</a>"
       ],
       "erforderlich": "ja"
     },
@@ -99,14 +99,14 @@
         "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir,",
         "den Datenbestand immer sofort zu aktualisieren.",
         "## App-Anbieter",
-        "Die App wird bereit gestellt von <a href=\"{{odp.anbieter.url}}\">{{odp.anbieter.name}}</a>",
+        "Die App wird bereit gestellt von <a href=\"{{{odp.anbieter.url}}}\">{{odp.anbieter.name}}</a>",
         "## Datenquelle",
-        "Die Daten kommen aus unserem Open Data Portal <a href=\"{{odp.url}}\">{{odp.name}}</a>",
-        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.apiurl}}\">{{appinstanz.apiurl}}</a>.",
+        "Die Daten kommen aus unserem Open Data Portal <a href=\"{{{odp.url}}}\">{{odp.name}}</a>",
+        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{{appinstanz.apiurl}}}\">{{appinstanz.apiurl}}</a>.",
         "## Über diese App",
-        "Die App wurde entwickelt von <a href=\"{{app.developer.url}}\">{{app.developer.name}}</a>. App-Version: {{app.version}}.",
+        "Die App wurde entwickelt von <a href=\"{{{app.developer.url}}}\">{{app.developer.name}}</a>. App-Version: {{app.version}}.",
         "## Open Data App Store",
-        "Der Open Data App Store betrieben von <a href=\"{{odas.betreiber.url}}\">{{odas.betreiber.name}}</a>"
+        "Der Open Data App Store betrieben von <a href=\"{{{odas.betreiber.url}}}\">{{odas.betreiber.name}}</a>"
       ],
       "erforderlich": "ja"
     },
@@ -126,7 +126,7 @@
         "{{odp.anbieter.strasse}}",
         "{{odp.anbieter.plzort}}",
         "",
-        "Website: <a href='{{odp.anbieter.url-extern}}' target='_blank'>{{odp.anbieter.url-extern}}</a>",
+        "Website: <a href='{{{odp.anbieter.url-extern}}}' target='_blank'>{{odp.anbieter.url-extern}}</a>",
         "",
         "### Ansprechpartner",
         "",
@@ -136,7 +136,7 @@
         "### Kontakt",
         "",
         "Tel.: {{odp.anbieter.tel}}",
-        "E-Mail: <a href='mailto:{{odp.anbieter.email}}'>{{odp.anbieter.email}}</a>",
+        "E-Mail: <a href='mailto:{{{odp.anbieter.email}}}'>{{odp.anbieter.email}}</a>",
         ""
       ],
       "erforderlich": "ja"
