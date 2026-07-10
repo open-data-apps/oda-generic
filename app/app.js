@@ -24,15 +24,20 @@
  */
 
 function app(configdata = {}, enclosingHtmlDivElement) {
+  if (!enclosingHtmlDivElement) {
+    throw new Error("Der Inhaltsbereich der App wurde nicht gefunden.");
+  }
+
   const prettyJson = JSON.stringify(configdata, null, 2);
   const proxyEnabled = isOdasProxyEnabled(configdata);
   const proxyStatus = proxyEnabled ? "aktiviert" : "deaktiviert";
 
   enclosingHtmlDivElement.innerHTML = `
     <section class="mb-4">
-      <h2>Konfiguration config.json:</h2>
+      <h2>Geladene Instanz-Konfiguration</h2>
+      <p>Diese technische Vorschau zeigt den aktuell wirksamen Konfigurationsstand der App.</p>
       <p><strong>Proxy-Status:</strong> ${proxyStatus}</p>
-      <pre><code>${escapeHtml(prettyJson)}</code></pre>
+      <pre class="generic-config-preview"><code>${escapeHtml(prettyJson)}</code></pre>
     </section>
   `;
 }
@@ -46,14 +51,28 @@ function extractPathFromUrl(url) {
     const parsedUrl = new URL(url);
     return parsedUrl.pathname + parsedUrl.search;
   } catch (e) {
-    return url;
+    return String(url || "");
   }
 }
 
+function getOdasAppBasePath(pathname = window.location.pathname) {
+  let appPath = String(pathname || "/");
+
+  if (!appPath.endsWith("/")) {
+    const lastSlashIndex = appPath.lastIndexOf("/");
+    const lastSegment = appPath.substring(lastSlashIndex + 1);
+    if (lastSegment.includes(".")) {
+      appPath = appPath.substring(0, lastSlashIndex + 1);
+    }
+  }
+
+  return appPath.replace(/\/+$/, "");
+}
+
 function getOdasProxyEndpoint(targetUrl) {
-  const fullPath = window.location.pathname.replace(/\/+$/, "");
+  const appPath = getOdasAppBasePath();
   const apiPath = extractPathFromUrl(targetUrl);
-  return `${fullPath}/odp-data?path=${encodeURIComponent(apiPath)}`;
+  return `${appPath}/odp-data?path=${encodeURIComponent(apiPath)}`;
 }
 
 async function fetchViaOdasProxy(targetUrl) {

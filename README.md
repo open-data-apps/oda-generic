@@ -1,69 +1,136 @@
-# ODAS App Generic
+# Generic Open Data App
 
-Generic-App für den Open Data App-Store (ODAP)
+Die **Generic Open Data App** ist die technische Ausgangsbasis für neue Apps im
+[Open Data App Store](https://open-data-app-store.de/). Sie enthält das gemeinsame
+ODAS-Seitenlayout, Hash-Routing, Instanz-Konfiguration und ein optionales Proxy-Muster.
 
-Die App Generic bietet eine generische Vorschau einer ODAS App.
-
-Die App ist eine "ODAP App V1".
-
-## Systemvorraussetzungen
-
-- Docker/Docker compose
-- Make
-
-Die Entwicklung wurde getestet unter Windows und Ubuntu
+Die Vorlage entspricht der
+[Open Data App Spezifikation](https://open-data-apps.github.io/open-data-app-docs/open-data-app-spezifikation/).
+Vor einer Veröffentlichung müssen Fachlogik, Metadaten, Datenmodell, Beschreibung,
+Screenshots und Icon durch app-spezifische Inhalte ersetzt werden.
 
 ## Funktionen
 
-Die APP ist eine Single Page Application Webapp. Mit:
+- Single Page Application mit teilbaren Hash-Routen
+- Seiten für Start, Beschreibung, Kontakt, Datenschutz und Impressum
+- sichtbarer Fehlerzustand bei nicht ladbarer Konfiguration
+- HTML-Passthrough für konfigurierte Rich-Text-Seiten
+- konfigurierbares Portal-Logo mit Link zur Startseite
+- lokale Konfigurationsvorschau mit maskierter HTML-Ausgabe
+- direkter Datenabruf oder ODAS-Proxy über `proxyAktiv`
+- Bootstrap 5.3.8 ohne Build-Schritt
 
-- Logo Anzeige
-- Menü
-- Seiten für Impressum, Datenschutz, Beschreibung, Kontakt, Hauptinhalt
-- Inhaltsbereich
-- Fußzeile
+## Für wen ist diese Vorlage?
 
-Die Konfiguration wird vom ODAS geladen.
+Die Vorlage richtet sich an Kommunen, öffentliche Einrichtungen und Entwicklungsteams,
+die eine neue Open-Data-App aufbauen oder technisch prüfen möchten. Für die Vorschau ist
+kein besonderes Datenfachwissen erforderlich; für eine konkrete App werden Kenntnisse der
+jeweiligen Datenquelle benötigt.
 
-Die APP zeigt Ihre Konfiguration im JSON Format an.
-Zusätzlich zeigt sie an, ob der ODAS-Proxy über die Instanz-Konfiguration aktiviert ist.
+## Architektur
+
+App-spezifischer Code gehört nach `app/app.js` und `app/app.css`. Die Dateien
+`app/app-base.js`, `app/app-base.css` und `app/index.html` bilden den austauschbaren
+Template-Laufzeitkern. Neue Apps sollten diese Base-Dateien nur bewusst und dokumentiert
+ändern.
+
+Die Funktion `app(configdata, enclosingHtmlDivElement)` erzeugt den Startseiteninhalt.
+`addToHead()` bleibt außerhalb und nach `app()` definiert. Optionale Bibliotheken werden
+in konkreten Apps über dedizierte Promise-basierte Loader aus `app/app.js` geladen.
+
+## Konfiguration
+
+| Parameter | Zweck | Pflicht |
+| --- | --- | --- |
+| `titel` | sichtbarer Titel in der Kopfzeile | ja |
+| `seitentitel` | Titel des Browser-Tabs | ja |
+| `icon` | Portal-Logo in der Kopfzeile | ja |
+| `beschreibung` | HTML-Inhalt der Seite „Über diese App“ | ja |
+| `kontakt` | HTML-Inhalt der Kontaktseite | ja |
+| `datenschutz` | HTML-Inhalt der Datenschutzseite | ja |
+| `impressum` | HTML-Inhalt des Impressums | ja |
+| `fusszeile` | Inhalt der Fußzeile | ja |
+| `brandingCSS` | optionaler CSS-Code der Instanz | nein |
+| `brandingCSSFile` | optionale URL zu einer Branding-CSS-Datei | nein |
+| `urlDaten` | Katalogseite des Datensatzes | nein |
+| `apiurl` | direkter Datei- oder API-Endpunkt | nein |
+| `proxyAktiv` | `nein` für Direktabruf, `ja` für ODAS-Proxy | ja |
+
+Jeder von `app/app.js` gelesene Konfigurationswert muss in `app-package.json` unter
+`instanz-config` deklariert und in `odas-config/config.json` für lokale Tests gespiegelt
+sein. Die Generic-App enthält bewusst keine fachliche Datenquelle.
+
+## Datenmodell
+
+`assets/schema.json` ist ein gültiges Frictionless Table Schema als Strukturbeispiel.
+Abgeleitete Apps ersetzen es vollständig durch die Felder ihrer tatsächlichen Datentabelle
+und aktualisieren gleichzeitig den `daten`-Block in `app-package.json`.
 
 ## ODAS-Proxy
 
-Die Generic-App enthält Proxy-Hilfsfunktionen für spätere Datenabrufe in konkreten Apps:
+- `proxyAktiv: "nein"`: `fetchOdasResource()` lädt die Ressource direkt.
+- `proxyAktiv: "ja"`: Die Funktion sendet einen `POST` an den app-lokalen
+  `odp-data`-Endpunkt und übergibt nur Pfad und Query im URL-kodierten Parameter `path`.
+- Der App-Basispfad funktioniert für `/app/`, `/app` und `/app/index.html`.
+- Echte Proxy-Antworten lassen sich nur im ODAS-Live-System prüfen. Lokal werden
+  Konfigurationsverdrahtung, Statusanzeige und der Direktmodus getestet.
 
-- `proxyAktiv: "nein"` lädt Ressourcen direkt per `fetch`.
-- `proxyAktiv: "ja"` lädt Ressourcen über den ODAS-Proxy-Endpunkt `odp-data`.
+## Lokale Entwicklung
 
-Echte Proxy-Aufrufe funktionieren nur im ODAS-Live-System. Lokal kann nur geprüft werden,
-ob die Konfiguration geladen und der Proxy-Status korrekt angezeigt wird.
+### Docker Compose
 
-## Entwicklung
+```bash
+make build up
+```
 
-    $ make build up
+Die App ist anschließend unter <http://localhost:8090> erreichbar. Für lokale Tests muss
+der dafür vorgesehene Localhost-Block in `app/app-base.js` vorübergehend auskommentiert
+werden, damit `odas-config/config.json` geladen wird. Vor ZIP-Erstellung oder Live-Auslieferung
+wird der Block wieder in den kommentierten Template-Zustand versetzt.
 
-Die App wird dadurch gestartet und steht auf Port 8089 zur Verfügung:
+### VS Code Live Server
 
-http://localhost:8089
+Live Server wird aus der Projektwurzel gestartet. Die App liegt dann üblicherweise unter
+`http://127.0.0.1:5500/app/`.
 
-Weil die App mit localhost gestartet wird wird die Konfiguration lokal geladen.
+```json
+{
+  "liveServer.settings.host": "127.0.0.1",
+  "liveServer.settings.root": "/",
+  "liveServer.settings.file": "app/index.html"
+}
+```
 
-Was bei der App Entwicklung beachtet werden sollte steht in der [ODA Spezifikation](https://open-data-apps.github.io/open-data-app-docs/)
+`liveServer.settings.root` bleibt `/`, damit `app/` und `odas-config/` als Geschwisterpfade
+erreichbar sind. Auch hier wird der Localhost-Block nur für den Test aktiviert und danach
+wieder zurückgesetzt.
 
-Nicht vergessen: Bevor die App in den ODAS eingereicht wird muss die `app-package.json` noch angepasst werden.
+## Prüfung und Auslieferung
 
-### Aufbau der App
+```bash
+node --check app/app.js
+node --check app/app-base.js
+python3 -m json.tool app-package.json >/dev/null
+python3 -m json.tool odas-config/config.json >/dev/null
+python3 -m json.tool assets/schema.json >/dev/null
+make zip
+```
 
-Inhaltsbereich wird in app.js erstellt. Ihr kann der eigene Code implementiert werden.
+Das ZIP enthält ausschließlich `app/`, `assets/`, `app-package.json` und `CHANGELOG.md`.
+Lokale Dateien unter `odas-config/` werden nicht ausgeliefert.
 
-#### Desktop Version
+## Wichtige Dateien
 
-![Alt-Text](/assets/Desktop_Screenshot.png)
-
-#### Mobile Version
-
-![Alt-Text](/assets/Mobile_Screenshot.png)
+| Datei | Zweck |
+| --- | --- |
+| `app/app.js` | app-spezifischer Startseiteninhalt und Proxy-Hilfsfunktionen |
+| `app/app.css` | app-spezifisches Styling |
+| `app/app-base.js` | Konfiguration, Routing und gemeinsame Seitendarstellung |
+| `app/index.html` | gemeinsames, responsives HTML-Grundgerüst |
+| `app-package.json` | Store-Metadaten und Instanz-Konfiguration |
+| `assets/schema.json` | Frictionless-Datenschema |
+| `odas-config/config.json` | lokale Testkonfiguration |
 
 ## Autor
 
-(C) 2026, Ondics GmbH
+© 2026 Ondics GmbH
