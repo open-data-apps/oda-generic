@@ -27,36 +27,48 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       console.log("Kein Custom Branding CSS in der Config gefunden.");
     }
-    loadPage("startseite");
+    window.addEventListener("hashchange", () => {
+      handleRouting().catch(renderRuntimeError);
+    });
+
+    const initialPage = getPageFromHash();
+    if (window.location.hash !== `#${initialPage}`) {
+      window.location.hash = `#${initialPage}`;
+    } else {
+      await handleRouting();
+    }
   } catch (err) {
     console.error("Fehler:", err);
+    renderRuntimeError(err);
   }
   setupBurgerMenu();
 });
 
 function getConfigUrl() {
-  const urlString = window.location.href;
-  const url = new URL(urlString);
-  let configUrl = `${urlString}config`;
-  /* Zum testen mit docker oder Live Server Kommentar entfernen 
+  const url = new URL(window.location.href);
+
+  url.search = "";
+  url.hash = "";
+
+  let pathname = url.pathname;
+  if (!pathname.endsWith("/")) {
+    const lastSlashIndex = pathname.lastIndexOf("/");
+    const lastSegment = pathname.substring(lastSlashIndex + 1);
+    if (lastSegment.includes(".")) {
+      pathname = pathname.substring(0, lastSlashIndex + 1);
+    } else {
+      pathname += "/";
+    }
+  }
+
+  let configUrl = url.origin + pathname + "config";
+
   if (["127.0.0.1", "localhost"].includes(url.hostname)) {
     configUrl = "../odas-config/config.json";
-  }*/
+  }
   return configUrl;
 }
 
-/* die Funktion macht aus Multiline-Strings (enden mit einem \)
- * Single Line Strings und dann ein normales Json
- */
-function normalizeJson(extendedJson = "") {
-  console.log(extendedJson);
-  const cleanedString = extendedJson.replace(/\\\s*\n\s*/g, "");
-  return JSON.parse(cleanedString);
-}
-
-/* die Funktion macht aus Multiline-Values (Array of Strings)
- * Single Line Values
- */
 function flattenJson(jsonObj) {
   const result = {};
   for (const key in jsonObj) {
@@ -68,7 +80,7 @@ function flattenJson(jsonObj) {
       value.every((item) => typeof item === "string")
     ) {
       // ...verbinde die Strings zu einem einzigen String
-      result[key] = value.join("");
+      result[key] = normalizeMultilineValue(value);
     } else {
       result[key] = value;
     }
@@ -76,11 +88,45 @@ function flattenJson(jsonObj) {
   return result;
 }
 
+function normalizeMultilineValue(value) {
+  if (!Array.isArray(value)) return value;
+  return value.filter((item) => item !== "_multiline_").join("\n");
+}
+
 async function fetchConfig(url) {
   const response = await fetch(url);
-  if (!response.ok) throw new Error("kann Konfiguration nicht laden");
+  if (!response.ok) {
+    throw new Error(
+      `Konfiguration konnte nicht geladen werden (HTTP ${response.status}).`,
+    );
+  }
   return flattenJson(await response.json());
-  //return normalizeJson(await response.text());
+}
+
+function escapeHtmlForBase(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function renderRuntimeError(error) {
+  const mainContent = document.getElementById("main-content");
+  if (!mainContent) return;
+
+  const details = escapeHtmlForBase(
+    error?.message || error || "Unbekannter Fehler",
+  );
+  mainContent.innerHTML = `
+    <div class="alert alert-danger my-4" role="alert">
+      <h2 class="h4 alert-heading">Fehler beim Laden der App</h2>
+      <p>Die Konfiguration oder der angeforderte Inhalt konnte nicht geladen werden.</p>
+      <hr>
+      <p class="mb-0">Details: ${details}</p>
+    </div>
+  `;
 }
 
 function updatePageContent() {
@@ -88,7 +134,7 @@ function updatePageContent() {
     titel = "",
     seitentitel = "",
     icon = "logo.png",
-    fusszeile = "&copy; 2026 ODAS App. Alle Rechte vorbehalten.",
+    fusszeile = "© 2026 ODAS App. Alle Rechte vorbehalten.",
   } = configData;
 
   const elementMappings = {
@@ -100,8 +146,11 @@ function updatePageContent() {
 
   Object.entries(elementMappings).forEach(([id, content]) => {
     const element = document.getElementById(id);
+    if (!element) return; // Existenz-Check
     if (id === "logo-icon") {
       element.src = content;
+    } else if (id === "footer-text") {
+      element.innerHTML = content;
     } else {
       element.textContent = content;
     }
@@ -112,7 +161,7 @@ async function loadPage(page) {
   let content;
   switch (page) {
     case "startseite":
-      content = app(configData, document.getElementById("main-content"));
+      content = await app(configData, document.getElementById("main-content"));
       break;
     case "kontakt":
       content = createPageContent("Kontakt", configData.kontakt);
@@ -135,27 +184,67 @@ async function loadPage(page) {
 }
 
 function createPageContent(title, content = "Informationen nicht verfügbar.") {
-  return `<div class="col" id="secondarySites"><h2>${title}</h2><p>${content}</p></div>`;
+  const pageContent = Array.isArray(content)
+    ? normalizeMultilineValue(content)
+    : content;
+  return `<div class="col" id="secondarySites"><h2>${title}</h2><div>${pageContent}</div></div>`;
 }
 
 function setupBurgerMenu() {
   document.querySelectorAll(".navbar-nav .nav-link").forEach((link) => {
+    const href = link.getAttribute("href");
     const pageName =
       link.getAttribute("data-page") ||
-      link.getAttribute("href").replace("#", "").trim();
+      (href ? href.replace("#", "").trim() : "");
     if (pageName) {
-      // Stelle sicher, dass pageName gültig ist
-      link.addEventListener("click", (event) => {
-        event.preventDefault(); // Verhindere das standardmäßige Link-Verhalten
-        loadPage(pageName); // Lade die entsprechende Seite
-
+      link.addEventListener("click", () => {
         const offcanvasNavbar = document.getElementById("offcanvasNavbar");
-        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar);
-
-        if (offcanvas && offcanvasNavbar.classList.contains("show")) {
-          offcanvas.hide();
+        if (offcanvasNavbar && typeof bootstrap !== "undefined") {
+          const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar);
+          if (offcanvas && offcanvasNavbar.classList.contains("show")) {
+            offcanvas.hide();
+          }
         }
       });
     }
   });
+}
+
+function getPageFromHash() {
+  const hash = window.location.hash.replace("#", "").trim();
+  const validPages = [
+    "startseite",
+    "beschreibung",
+    "kontakt",
+    "datenschutz",
+    "impressum",
+  ];
+  if (validPages.includes(hash)) {
+    return hash;
+  }
+  return "startseite";
+}
+
+function updateActiveNavLink(page) {
+  document.querySelectorAll(".navbar-nav .nav-link").forEach((link) => {
+    const href = link.getAttribute("href");
+    const pageName =
+      link.getAttribute("data-page") ||
+      (href ? href.replace("#", "").trim() : "");
+    if (pageName === page) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
+}
+
+async function handleRouting() {
+  const page = getPageFromHash();
+  if (window.location.hash !== `#${page}`) {
+    window.location.hash = `#${page}`;
+    return;
+  }
+  await loadPage(page);
+  updateActiveNavLink(page);
 }

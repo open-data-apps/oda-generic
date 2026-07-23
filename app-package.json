@@ -3,28 +3,28 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "generic",
   "name": "Generic Open Data App",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
-  "kurzbeschreibung": "Generische Open-Data-App als Anschauungsobjekt und Vorlage für weitere ODAS-Apps.",
+  "kurzbeschreibung": "Technische ODAS-Vorlage mit Hash-Routing, Instanz-Konfiguration und optionalem Proxy-Muster für neue Open-Data-Apps.",
   "beschreibung": [
     "_multiline_",
-    "Die Generic-App ist ein Musterbeispiel für weitere Open-Data-Apps.",
-    "Inhaltlich stellt sie primär die bereitgestellten Konfigurationsdaten dar.",
-    "Die Daten werden aus einem Open Data Portal bezogen.",
-    ""
+    "Die Generic Open Data App ist die technische Ausgangsbasis für neue Apps im Open Data App Store.",
+    "Sie enthält das gemeinsame Seitenlayout, die ODAS-Konfigurationsanbindung, barrierearme Navigation und Hilfsfunktionen für direkte oder proxygestützte Datenabrufe.",
+    "Die mitgelieferte Konfigurationsvorschau macht den wirksamen Instanz-Stand sichtbar und erleichtert die lokale Entwicklung.",
+    "Vor einer Veröffentlichung werden Fachlogik, Metadaten, Datenmodell, Beschreibung, Screenshots und Icon durch app-spezifische Inhalte ersetzt."
   ],
-  "tags-funktion": ["App-Entwicklung"],
-  "tags-dateityp": ["*"],
-  "tags-datenart": ["Beliebig"],
+  "tags-funktion": ["Vorlage", "Konfigurationsvorschau", "Proxy"],
+  "tags-dateityp": ["JSON"],
+  "tags-datenart": ["Konfigurationsdaten"],
   "screenshots": [
     "assets/Desktop_Screenshot.png",
     "assets/Mobile_Screenshot.png"
   ],
   "daten": {
-    "beschreibung": "Die Generic-App verarbeitet konfigurierbare Open-Data-Ressourcen aus dem Open Data Portal (z.B. JSON- oder CSV-Endpunkte).",
-    "schema": "",
-    "beispiel": "",
+    "beschreibung": "Die Generic-App lädt selbst keinen Fachdatenbestand. assets/schema.json ist ein gültiges Frictionless-Beispielschema und muss in abgeleiteten Apps durch das tatsächliche Tabellenmodell ersetzt werden.",
+    "schema": "assets/schema.json",
+    "beispiel": "Beispielstruktur für tabellarische Open Data; vor der Veröffentlichung durch app-spezifische Angaben ersetzen.",
     "beispiel-url": ""
   },
   "branding-css": "",
@@ -32,37 +32,27 @@
   "instanz-config": {
     "seitentitel": {
       "label": "Seitentitel",
-      "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt",
-      "default": "Generic ODA",
+      "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt.",
+      "default": "Generic Open Data App",
       "format": {
         "typ": "string",
-        "laenge": 50
-      },
-      "erforderlich": "ja"
-    },
-    "lizenz": {
-      "label": "Lizenz",
-      "hilfe": "Angabe der Lizenz, die für die Nutzung der App gilt.",
-      "default": "Open Software License (OSL)",
-      "format": {
-        "typ": "string",
-        "laenge": 50
+        "laenge": 80
       },
       "erforderlich": "ja"
     },
     "titel": {
       "label": "Titel",
-      "hilfe": "Der Titel wird in der Titelzeile der App angezeigt",
+      "hilfe": "Der Titel wird in der Kopfzeile der App angezeigt.",
       "default": "Generic Open Data App",
       "format": {
         "typ": "string",
-        "laenge": 50
+        "laenge": 80
       },
       "erforderlich": "ja"
     },
     "icon": {
-      "label": "App-Icon",
-      "hilfe": "Das Icon wird links oben in der Titelzeile angezeigt",
+      "label": "Portal-Logo",
+      "hilfe": "Das Logo wird links oben in der Kopfzeile angezeigt und führt zur Startseite.",
       "default": "{{{odp.logo}}}",
       "format": {
         "typ": "image",
@@ -73,121 +63,132 @@
     },
     "kontakt": {
       "label": "Kontakt",
-      "hilfe": "Der Text wird im Menüpunkt 'Kontakt' anzeigt",
+      "hilfe": "Der HTML-Inhalt wird im Menüpunkt Kontakt angezeigt.",
+      "default": [
+        "_multiline_",
+        "<p>Sie haben Fragen, Hinweise oder Verbesserungsvorschläge zu dieser App? Wenden Sie sich gern an den Anbieter des Open Data Portals.</p>",
+        "<p>Telefon: <a href='tel:{{odp.anbieter.telcode}}'>{{odp.anbieter.tel}}</a><br>E-Mail: <a href='mailto:{{odp.anbieter.email}}'>{{odp.anbieter.email}}</a></p>"
+      ],
       "format": {
         "typ": "markdown"
       },
-      "default": [
-        "_multiline_",
-        "Sie sind zufrieden mit der App oder haben Anregungen, Verbesserungen oder Hinweise, die Sie uns mitteilen möchten?",
-        "Dann richten Sie sich gerne an uns. Wir freuen uns über alle Nachrichten. ",
-        "Ihre Nachrichten können Sie uns mitteilen über:",
-        "Tel.: <a href='tel:{{{odp.anbieter.telcode}}}'>{{odp.anbieter.tel}}</a>",
-        "E-Mail: <a href='mailto:{{{odp.anbieter.email}}}'>{{odp.anbieter.email}}</a>"
-      ],
       "erforderlich": "ja"
     },
     "beschreibung": {
       "label": "Beschreibung",
-      "hilfe": "Der Text wird im Menüpunkt 'Über diese App' angezeigt",
+      "hilfe": "Der HTML-Inhalt wird im Menüpunkt Über diese App angezeigt.",
+      "default": [
+        "_multiline_",
+        "<p>Die Generic Open Data App ist die technische Ausgangsbasis für neue Apps im Open Data App Store. Sie stellt das gemeinsame Layout, die ODAS-Konfiguration und wiederverwendbare Laufzeitfunktionen bereit.</p>",
+        "<h2>Inhalte</h2>",
+        "<p>Auf der Startseite zeigt die Vorlage die geladene Instanz-Konfiguration und den Status des optionalen ODAS-Proxys. Die Informationsseiten für Beschreibung, Kontakt, Datenschutz und Impressum werden aus derselben Konfiguration erzeugt.</p>",
+        "<h2>Nutzung</h2>",
+        "<p>Entwickler:innen ersetzen die Vorschau in <code>app/app.js</code> durch die konkrete Fachanwendung und passen ausschließlich die app-spezifischen Dateien und Metadaten an. Die Base-Dateien bleiben als austauschbarer ODAS-Laufzeitkern erhalten.</p>",
+        "<h2>Für wen ist diese App?</h2>",
+        "<p>Die Vorlage richtet sich an Kommunen, öffentliche Einrichtungen und Entwicklungsteams, die eine neue Open-Data-App erstellen oder technisch prüfen möchten. Für die Konfigurationsvorschau ist kein besonderes Datenfachwissen erforderlich.</p>",
+        "<h2>Datenquelle</h2>",
+        "<p>Die Generic-App lädt absichtlich keinen Fachdatenbestand. In einer abgeleiteten App werden Datensatz- und Ressourcenlink aus <code>urlDaten</code> und <code>apiurl</code> übernommen und passend zur tatsächlich verwendeten Quelle beschrieben.</p>",
+        "<ul>",
+        "<li><strong>Open Data Portal:</strong> <a href='{{odp.url}}' target='_blank' rel='noopener'>{{odp.name}}</a></li>",
+        "</ul>",
+        "<h2>Open Data App Store</h2>",
+        "<p>Der Open Data App Store wird von <a href='{{odas.betreiber.url}}' target='_blank' rel='noopener'>{{odas.betreiber.name}}</a> betrieben. Die Vorlage wurde von <a href='{{app.developer.url}}' target='_blank' rel='noopener'>{{app.developer.name}}</a> entwickelt. App-Version: {{app.version}}.</p>"
+      ],
       "format": {
         "typ": "markdown"
       },
-      "default": [
-        "_multiline_",
-        "Die Generic-App zeigt die jeweils definierten Configs.",
-        "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir,",
-        "den Datenbestand immer sofort zu aktualisieren.",
-        "## App-Anbieter",
-        "Die App wird bereit gestellt von <a href=\"{{{odp.anbieter.url}}}\">{{odp.anbieter.name}}</a>",
-        "## Datenquelle",
-        "Die Daten kommen aus unserem Open Data Portal <a href=\"{{{odp.url}}}\">{{odp.name}}</a>",
-        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{{appinstanz.apiurl}}}\">{{appinstanz.apiurl}}</a>.",
-        "## Über diese App",
-        "Die App wurde entwickelt von <a href=\"{{{app.developer.url}}}\">{{app.developer.name}}</a>. App-Version: {{app.version}}.",
-        "## Open Data App Store",
-        "Der Open Data App Store betrieben von <a href=\"{{{odas.betreiber.url}}}\">{{odas.betreiber.name}}</a>"
-      ],
       "erforderlich": "ja"
     },
     "impressum": {
       "label": "Impressum",
-      "hilfe": "Der Text wird im Menüpunkt 'Impressum' anzeigt",
+      "hilfe": "Der HTML-Inhalt wird im Menüpunkt Impressum angezeigt.",
+      "default": [
+        "_multiline_",
+        "<h2>Anbieter</h2>",
+        "<p>{{{odp.anbieter.orgName}}}<br>{{{odp.anbieter.orgUnit}}}</p>",
+        "<p>{{odp.anbieter.strasse}}<br>{{odp.anbieter.plzort}}</p>",
+        "<p>Website: <a href='{{odp.anbieter.url-extern}}' target='_blank' rel='noopener'>{{odp.anbieter.url-extern}}</a></p>",
+        "<h2>Ansprechperson</h2>",
+        "<p>{{odp.anbieter.kontakt-bezeichnung}}<br>{{odp.anbieter.name}}</p>",
+        "<h2>Kontakt</h2>",
+        "<p>Telefon: {{odp.anbieter.tel}}<br>E-Mail: <a href='mailto:{{odp.anbieter.email}}'>{{odp.anbieter.email}}</a></p>"
+      ],
       "format": {
         "typ": "markdown"
       },
-      "default": [
-        "_multiline_",
-        "### Anbieter",
-        "",
-        "{{{odp.anbieter.orgName}}}",
-        "{{{odp.anbieter.orgUnit}}}",
-        "",
-        "{{odp.anbieter.strasse}}",
-        "{{odp.anbieter.plzort}}",
-        "",
-        "Website: <a href='{{{odp.anbieter.url-extern}}}' target='_blank'>{{odp.anbieter.url-extern}}</a>",
-        "",
-        "### Ansprechpartner",
-        "",
-        "{{odp.anbieter.kontakt-bezeichnung}}",
-        "{{odp.anbieter.name}}",
-        "",
-        "### Kontakt",
-        "",
-        "Tel.: {{odp.anbieter.tel}}",
-        "E-Mail: <a href='mailto:{{{odp.anbieter.email}}}'>{{odp.anbieter.email}}</a>",
-        ""
-      ],
       "erforderlich": "ja"
     },
     "datenschutz": {
       "label": "Datenschutz",
-      "hilfe": "Der Text wird im Menüpunkt 'Datenschutz' anzeigt",
+      "hilfe": "Der HTML-Inhalt wird im Menüpunkt Datenschutz angezeigt.",
+      "default": [
+        "_multiline_",
+        "<p>Die Generic-App verarbeitet im Browser nur die vom ODAS bereitgestellte Instanz-Konfiguration. Für eine abgeleitete App ist die Datenschutzerklärung an die tatsächlich geladenen Daten und eingebundenen Dienste anzupassen.</p>"
+      ],
       "format": {
         "typ": "markdown"
       },
-      "default": ["_multiline_", "Alle Daten sind geschützt."],
-      "erforderlich": "ja"
-    },
-    "urlDaten": {
-      "label": "URL zum Datensatz im ODP",
-      "hilfe": "Der Datensatz im Open Data Portal mit den Daten der Generic App",
-      "format": {
-        "typ": "url"
-      },
-      "default": "",
-      "beispiel": "",
       "erforderlich": "ja"
     },
     "fusszeile": {
       "label": "Fußzeile",
-      "hilfe": "Wird auf der Website unten in der Fusszeile angezeigt.",
+      "hilfe": "Der HTML-Inhalt wird am unteren Rand der App angezeigt.",
+      "default": "© {{jahr}} | App und Daten: {{odp.anbieter.name}} | Entwicklung: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
       "format": {
-        "typ": "String",
-        "laenge": 50
-      },
-      "default": "(C) Copyright {{jahr}} | App & Daten: {{odp.anbieter.name}} | App-Entwickler: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
-      "erforderlich": "ja"
-    },
-    "apiurl": {
-      "label": "URL zu den Daten",
-      "hilfe": "Von dieser URL zum Datensatz werden die Ressourcen bezogen",
-      "format": {
-        "typ": "url",
+        "typ": "string",
         "laenge": 255
       },
-      "default": "",
-      "beispiel": "",
       "erforderlich": "ja"
     },
-    "sprache": {
-      "label": "Sprache der App",
-      "hilfe": "Angabe der App-Sprache",
+    "brandingCSS": {
+      "label": "Zusätzliches Branding-CSS",
+      "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "string",
+        "laenge": 10000
+      },
+      "erforderlich": "nein"
+    },
+    "brandingCSSFile": {
+      "label": "Branding-CSS-Datei",
+      "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "url",
+        "laenge": 500
+      },
+      "erforderlich": "nein"
+    },
+    "urlDaten": {
+      "label": "URL zum Datensatz",
+      "hilfe": "Katalog- oder Metadatenseite des tatsächlich verwendeten Datensatzes.",
+      "default": "",
+      "beispiel": "",
+      "format": {
+        "typ": "url",
+        "laenge": 500
+      },
+      "erforderlich": "nein"
+    },
+    "apiurl": {
+      "label": "URL zur Datenressource",
+      "hilfe": "Direkter Download-, Datei- oder API-Endpunkt der tatsächlich verwendeten Datenquelle.",
+      "default": "",
+      "beispiel": "",
+      "format": {
+        "typ": "url",
+        "laenge": 500
+      },
+      "erforderlich": "nein"
+    },
+    "proxyAktiv": {
+      "label": "ODAS-Proxy aktivieren",
+      "hilfe": "Mit ja werden Datenabrufe über den ODAS-Proxy gesendet. Echte Proxy-Aufrufe sind nur im ODAS-Live-System prüfbar.",
+      "default": "nein",
       "format": {
         "typ": "dropdown",
-        "optionen": ["de"],
-        "default": "de"
+        "optionen": ["nein", "ja"]
       },
       "erforderlich": "ja"
     }
