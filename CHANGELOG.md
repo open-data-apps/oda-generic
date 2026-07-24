@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0 - 2026-07-23
+
+- **ENH:** Einfachen Standalone-Betrieb hinter Traefik mit derselben `odas-config/config.json` wie in der Entwicklung ergänzt
+- **ENH:** Traefik-Anbindung auf das externe Netzwerk `proxynet`, den EntryPoint `websecure` und den Zertifikatsresolver `letsencrypt` festgelegt
+- **ENH:** Nginx liefert die Konfiguration unter `/config` aus und stellt `/assets/` bereit
+- **ENH:** Compose-Service von `web` auf `oda-app` umbenannt, `odas-config` read-only gemountet
+- **ENH:** Fetch-Helper auf die kanonische Portfolio-Fassung vereinheitlicht (`fetchOdasJson` ergänzt, Fehlermeldung mit CORS-Hinweis)
+- **FIX:** Interne Entwickler-IP `10.0.0.142` aus `getConfigUrl()` entfernt (Nachtrag zu 38decc2 nach dem Upstream-Merge)
+- **DOC:** Start über `STANDALONE=true make up` dokumentiert
+
 ## 1.1.0 - 2026-07-10
 
 - ENH: Hash-basiertes Routing mit teilbaren Unterseiten und Browser-Navigation ergänzt
